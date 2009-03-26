@@ -18,9 +18,9 @@ public class Main {
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) throws Exception {
 	//TestBasePerf.run(1024,6, 70,200);
-	TestBigNumberPerf.runAll();
+	//TestBigNumberPerf.runAll();
 	//Test.mulFFT();
 	//Test.run();
-	//new View();
+	new View();
     }
 }

@@ -4,8 +4,6 @@
  */
 package org.amse.vadim.bignumberslibrary;
 
-import java.math.BigInteger;
-
 public class BigNumber {
 
     // zero-BigNumber have sign=0 and null intArray
