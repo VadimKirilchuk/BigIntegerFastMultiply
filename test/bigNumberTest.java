@@ -51,7 +51,7 @@ public class bigNumberTest extends TestCase {
 
 	for (int i = 0; i < N; ++i) {
 	    if (byteArray[i] != byteArray2[i]) {
-		fail("!Wrong data in array!");
+		assertEquals("!Wrong data in array!",byteArray[i],byteArray2[i]);
 	    }
 	}
     }

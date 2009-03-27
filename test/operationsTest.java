@@ -48,8 +48,8 @@ public class operationsTest extends TestCase {
 	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
 	
-	BigNumber bn1 = new BigNumber(byteArray1);
-	BigNumber bn2 = new BigNumber(byteArray2);
+	BigNumber bn1 = new BigNumber(byteArray1,1);
+	BigNumber bn2 = new BigNumber(byteArray2,1);
 	BigInteger bi1=new BigInteger(byteArray1);
 	BigInteger bi2=new BigInteger(byteArray2);
 
@@ -142,8 +142,8 @@ public class operationsTest extends TestCase {
 	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
 	
-	BigNumber bn1 = new BigNumber(byteArray1);
-	BigNumber bn2 = new BigNumber(byteArray2);
+	BigNumber bn1 = new BigNumber(byteArray1,1);
+	BigNumber bn2 = new BigNumber(byteArray2,1);
 	BigInteger bi1=new BigInteger(byteArray1);
 	BigInteger bi2=new BigInteger(byteArray2);
 

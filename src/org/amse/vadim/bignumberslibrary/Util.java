@@ -106,17 +106,34 @@ public class Util {
 
     public static byte[] reverseCode(byte[] array){
 	int len = array.length;
+	
+	byte[] result = new byte[len];
+	
 	for (int i = 0; i < len ; i++) {
-	    array[i]=(byte)((array[i] & 0xff) ^ 0xff);
+	    result[i]=(byte)(~(array[i]&0xff)+1);
 	}
-	return array;
+	return result;
     }
-    
-    public static int[] reverseCode(int[] array,int length){
-	int len = length;
-	for (int i = 0; i < len ; i++) {
-	    array[i]=(array[i] ^ 0xffff);
+
+    //В бигинтеджере 
+    // непонятно как так получается
+    // (-4 -4 )=0000 0011 0000 0100
+    //т.е первая четвёрка перевелась не так как вторая...
+    public static byte[] makePositive(byte[] array){
+	int len = array.length;
+	
+	int keep=0;
+	// Find first non-sign (0xff) byte of input
+	for ( keep=0; keep<len && array[keep]==-1; keep++){
+	    ;
 	}
-	return array;
+	
+	byte[] result = new byte[len-keep];
+	
+	for(int i=keep ;i < len;++i ){
+	    result[i-keep]=(byte)(~(array[i]&0xff));
+        }
+	
+	return result;
     }
 }

@@ -20,7 +20,7 @@ public class BigNumber {
 	if (array == null || array.length == 0) {
 		this.sign = 0;
 		this.intArray = null;
-		this.length = 0;
+		this.length = 0;	
 	} else {
 	    //Нам нужен реверс, когда мы объявляем бигнам, но не нужен в 
 	    //возвратах операций сложения,выччитания, умножения и т.д
@@ -48,7 +48,8 @@ public class BigNumber {
 	    this.length = 0;
 	} else if(array[0]<0){
 	    this.sign=-1;
-	    this.intArray = Convert.intFrom(Util.reverseArray(Util.reverseCode(array)));
+	    this.intArray=Convert.intFrom(Util.reverseArray(Util.makePositive(array)));
+	    //this.intArray = Convert.intFrom(Util.reverseArray(Util.reverseCode(array)));
 	} else {
 	    this.sign=1;
 	    this.intArray = Convert.intFrom(Util.reverseArray(array));
@@ -237,8 +238,9 @@ public class BigNumber {
     //Just changing sign(In BigInteger it changes elements(a -> -a+1))
     public BigNumber negate() {
 	//return new BigNumber(this.intArray, (-1) * sign);
-	int[] result = Util.reverseCode(this.intArray,this.length);
-	return new BigNumber(result,-this.sign);
+	//int[] result = Util.reverseCode(this.intArray,this.length);
+	//return new BigNumber(result,-this.sign);
+	return new BigNumber(intArray, -sign);
     }
 
     public int[] getArrayOfBigNumber() {
@@ -266,5 +268,5 @@ public class BigNumber {
     public byte[] toByteArray() {
 	return this.toByteArray(true);
     }
-    
+        
 }
