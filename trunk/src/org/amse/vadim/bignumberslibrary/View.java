@@ -7,6 +7,7 @@ package org.amse.vadim.bignumberslibrary;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.*;
 /**
  *
@@ -17,6 +18,8 @@ public class View extends JFrame{
     private int width=400;
     private int heigth=300;
     
+    java.util.ArrayList<String> hist= new ArrayList<String>();
+    int i = 0;
     
     protected JTextField input;
     protected JTextArea history;
@@ -63,6 +66,8 @@ public class View extends JFrame{
 
 	public void actionPerformed(ActionEvent e) {
 	    history.append(input.getText()+newline);
+	    hist.add(input.getText());
+	    i=hist.size();
 	    input.setText("");
 	}
 	
@@ -75,7 +80,27 @@ public class View extends JFrame{
 	}
 
 	public void keyPressed(KeyEvent e) {
-	    if (e.getKeyCode()== e.VK_DOWN) input.setText("bl");
+	    
+	    if (e.getKeyCode()== KeyEvent.VK_DOWN) {
+		if (hist.size()==0) return;
+		
+		if (i==0) i=hist.size();
+		
+		i-=1;
+		input.setText(hist.get(i));
+		
+	    }
+	    
+	    if (e.getKeyCode()== KeyEvent.VK_UP) {
+		if (hist.size()==0) return;
+		
+		if (i==hist.size()-1 || i==hist.size()) i=-1;
+		
+		i+=1;
+		input.setText(hist.get(i));
+
+	    }
+	    
 	}
 
 	public void keyReleased(KeyEvent e) {
