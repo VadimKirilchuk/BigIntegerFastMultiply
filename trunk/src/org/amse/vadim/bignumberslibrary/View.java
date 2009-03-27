@@ -55,7 +55,7 @@ public class View extends JFrame{
 	c.weightx = buffx;
         c.weighty = buffy;
         add(input, c);
-	
+		
 	setVisible(true);
     }  
     
