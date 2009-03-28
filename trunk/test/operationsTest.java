@@ -37,14 +37,11 @@ public class operationsTest extends TestCase {
 	byte[] byteArray1 = new byte[N1];
 	byte[] byteArray2 = new byte[N2];
 
-	//Старший коэфицент д.б >0 иначе, бигинтеджер подумает,Что ему передали отрицательное число.
-	byteArray1[0]=(byte)rnd.nextInt(Byte.MAX_VALUE);
-	for (int i = 1; i < byteArray1.length; i++) {
+	for (int i = 0; i < byteArray1.length; i++) {
 	    byteArray1[i]=(byte)(rnd.nextInt(Byte.MAX_VALUE)-2*rnd.nextInt(Byte.MAX_VALUE));
 	}
 	
-	byteArray2[0] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-	for (int i = 1; i < byteArray2.length; i++) {
+	for (int i = 0; i < byteArray2.length; i++) {
 	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
 	
@@ -71,7 +68,7 @@ public class operationsTest extends TestCase {
 	    assertEquals("!Wrong element!",res1[i], res2[i]);
 	}
 	////////end of two positive
-	
+	/*
 	///////summ of positive and negative
 	//bn1
 	bn2=bn2.negate();
@@ -118,7 +115,7 @@ public class operationsTest extends TestCase {
 	    assertEquals("!Wrong element!", res1[i], res2[i]);
 	}
 	//////end of negative and negative summ
-	
+	*/
 	
     }
 
@@ -220,6 +217,8 @@ public class operationsTest extends TestCase {
 	//////end of negative and negative summ
     }
     
+    //Failing when BigInteger  toByteArray is something like (0; x; x; x; x)
+    //cause BigInteger doesn`t cut this leading zero
     public static void testSimpleMultiply(){
 	///////determination
 	Random rnd = new Random();

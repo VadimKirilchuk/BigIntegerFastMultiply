@@ -44,15 +44,15 @@ public class bigNumberTest extends TestCase {
 	}
 
 	BigNumber bn = new BigNumber(byteArray);
+	BigInteger bi = new BigInteger(byteArray);
 
-	byte[] byteArray2 = bn.toByteArray();
+	byte[] byteArray1 = bn.toByteArray();
+	byte[] byteArray2 = bi.toByteArray();
 
-	assertEquals("!Length not same!", N, byteArray.length);
+	assertEquals(byteArray2[0]+" !Length not same!", byteArray1.length, byteArray2.length);
 
-	for (int i = 0; i < N; ++i) {
-	    if (byteArray[i] != byteArray2[i]) {
+	for (int i = 0; i < Math.min(byteArray1.length,byteArray2.length); ++i) {
 		assertEquals("!Wrong data in array!",byteArray[i],byteArray2[i]);
-	    }
 	}
     }
 
