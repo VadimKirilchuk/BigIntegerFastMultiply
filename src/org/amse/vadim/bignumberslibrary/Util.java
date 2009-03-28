@@ -4,6 +4,8 @@
  */
 package org.amse.vadim.bignumberslibrary;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author chibis
@@ -81,7 +83,9 @@ public class Util {
     }
 
     public static byte[] reverseArray(byte[] array) {
-         
+        //???
+	if(array.length==1 || array.length==0) return array;
+	
 	byte[] result = new byte[array.length];
         
 	for (int i = 0; i <= array.length / 2; ++i) {
@@ -115,10 +119,6 @@ public class Util {
 	return result;
     }
 
-    //В бигинтеджере 
-    // непонятно как так получается
-    // (-4 -4 )=0000 0011 0000 0100
-    //т.е первая четвёрка перевелась не так как вторая...
     public static byte[] makePositive(byte[] array){
 	int len = array.length;
 	
@@ -133,6 +133,72 @@ public class Util {
 	for(int i=keep ;i < len;++i ){
 	    result[i-keep]=(byte)(~(array[i]&0xff));
         }
+	
+	return result;
+    }
+    
+    public static int[] addOne(int[] array){
+	int length = array.length;
+	int[] result = new int[length];
+	
+	for (int i = 0; i < length; i++) {
+	    result[i]=array[i]+1;
+	}
+	
+	return result;
+    }
+    
+    public static int[] reverseInts(int[] array){
+	int len = array.length;
+	
+	int[] result = new int[len];
+	for (int i = 0; i < len; i++) {
+	    result[i]=~array[i]+1;
+	}
+	
+	return result;
+    }
+
+    /**
+     * bitLen(val) is the number of bits in val.
+     */
+    private static int bitLen(int w) {
+        // Binary search - decision tree (5 tests, rarely 6)
+        return
+         (w < 1<<15 ?
+          (w < 1<<7 ?
+           (w < 1<<3 ?
+            (w < 1<<1 ? (w < 1<<0 ? (w<0 ? 32 : 0) : 1) : (w < 1<<2 ? 2 : 3)) :
+            (w < 1<<5 ? (w < 1<<4 ? 4 : 5) : (w < 1<<6 ? 6 : 7))) :
+           (w < 1<<11 ?
+            (w < 1<<9 ? (w < 1<<8 ? 8 : 9) : (w < 1<<10 ? 10 : 11)) :
+            (w < 1<<13 ? (w < 1<<12 ? 12 : 13) : (w < 1<<14 ? 14 : 15)))) :
+          (w < 1<<23 ?
+           (w < 1<<19 ?
+            (w < 1<<17 ? (w < 1<<16 ? 16 : 17) : (w < 1<<18 ? 18 : 19)) :
+            (w < 1<<21 ? (w < 1<<20 ? 20 : 21) : (w < 1<<22 ? 22 : 23))) :
+           (w < 1<<27 ?
+            (w < 1<<25 ? (w < 1<<24 ? 24 : 25) : (w < 1<<26 ? 26 : 27)) :
+            (w < 1<<29 ? (w < 1<<28 ? 28 : 29) : (w < 1<<30 ? 30 : 31)))));
+    }
+
+    //Положительный numBits для сдвига вправо
+    //Отрицательный - влево, т.к число хранится слева направо.
+    public static int[] shift(int[] src,int length,int numBits){
+	//Свободные биты в старшем разряде
+	int freeBits = 32-bitLen(src[length-1]); 
+	int[] result = new int[length];
+	//Если можно сдвинуть без увеличения размера
+	//if (numBits>0 && numBits< freeBits){
+	    long carry=0;
+	    //просто делаем сдвиг
+	    for (int i = 0; i < src.length; i++) {
+		int a = (int)((src[i] & Util.LONG_MASK)<< numBits);		
+		result[i] =(int)(a | (carry >>32));  
+		carry=(src[i] & Util.LONG_MASK) << numBits;
+	    }
+   
+	//}
 	
 	return result;
     }

@@ -48,8 +48,8 @@ public class BigNumber {
 	    this.length = 0;
 	} else if(array[0]<0){
 	    this.sign=-1;
-	    this.intArray=Convert.intFrom(Util.reverseArray(Util.makePositive(array)));
-	    //this.intArray = Convert.intFrom(Util.reverseArray(Util.reverseCode(array)));
+	    this.intArray=Util.addOne(Convert.intFrom(Util.reverseArray(Util.makePositive(array))));
+	    
 	} else {
 	    this.sign=1;
 	    this.intArray = Convert.intFrom(Util.reverseArray(array));
@@ -249,6 +249,10 @@ public class BigNumber {
     //////////////////Вспомогательные функции////////////////////////
     
     private byte[] toByteArray(boolean reverse) {
+	if (this.sign==-1) {
+	    this.intArray=Util.reverseInts(this.intArray);
+	}
+	
 	int byteArrayLen = this.length * 4;
 	byte[] byteArray = new byte[byteArrayLen];
 
