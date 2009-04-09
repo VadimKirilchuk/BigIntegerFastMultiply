@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.amse.vadim.bignumberslibrary;
+package org.amse.vadim.calc;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -4,6 +4,8 @@
  */
 package org.amse.vadim.bignumberslibrary;
 
+import java.math.BigInteger;
+
 public class BigNumber {
 
     // zero-BigNumber have sign=0 and null intArray
@@ -22,8 +24,7 @@ public class BigNumber {
 		this.intArray = null;
 		this.length = 0;	
 	} else {
-	    //Нам нужен реверс, когда мы объявляем бигнам, но не нужен в 
-	    //возвратах операций сложения,выччитания, умножения и т.д
+	    //reverse in first determination only. Not in operations.
 	    if(reverse){
 		this.intArray=Convert.intFrom(Util.reverseArray(array));
 	    }else{
@@ -39,8 +40,7 @@ public class BigNumber {
 	this(array,sign,true);
     }
 
-    //Constructor from byteArray  with sign>=0
-    //С поддержкой дополнительного кода
+    //Constructor like in BigInteger. With support of complement code
     public BigNumber(byte[] array) {
 	if (array == null || array.length == 0) {
 	    this.sign = 0;
@@ -57,9 +57,7 @@ public class BigNumber {
 	    this.length = this.intArray.length;
     }
 
-    //MAIN Constructor from intArray with SIGN    
-    //Нет реверса, т.к у бигинта нет конструкторов из байтов
-    //соответственно не заботимся о совпадении.
+    //only BigNumber(not compatable with BigInteger) constructor.
     public BigNumber(int[] array, int sign) {
 	if (array == null || array.length == 0) {
 	    	this.sign = 0;
@@ -72,7 +70,8 @@ public class BigNumber {
 	}
     }
 
-    //Constructor from intArray  with sign>=0  
+    //Constructor from intArray  with sign>=0
+    //not compatible with BigInteger constructors
     public BigNumber(int[] array) {
 	this(array, 1);
     }
@@ -174,23 +173,7 @@ public class BigNumber {
 
 	return new BigNumber(result, this.sign * bnum.sign, false);
     }
-
-    public BigNumber div(BigNumber bnum) throws Exception {
-	if (bnum.sign==0) throw new Exception("Divide by zero Exception");
-	if (this.sign==0) return new BigNumber();
-	if (bnum.length>this.length) return new BigNumber();
-	if (bnum.length==1) {
-	    int[] result = this.intArray;
-            int p = bnum.intArray[0];
-	    for (int i = 0; i < this.length ; ++i) {
-		//result[i]=result[i]/p;
-	    }
-	    return new BigNumber(result,1);
-	}
-	return new BigNumber(Operations.div(this.intArray,this.length,bnum.intArray,bnum.length),this.sign*bnum.sign);
-    }
-
-    public BigNumber mulFFT2(BigNumber bnum) {
+        public BigNumber mulFFT2(BigNumber bnum) {
 	if (sign == 0 || bnum.sign == 0) {
 	    return new BigNumber();
 	}
@@ -202,22 +185,55 @@ public class BigNumber {
 	byte[] result = Operations.mulFFT2(a,b);
 
 	return new BigNumber(result, this.sign * bnum.sign, false);
+    }	
+    //Not Supported yet!!!
+    //Divide like "/" - not like "/ + %"
+    public BigNumber div(BigNumber bnum) throws Exception {
+	if (bnum.sign==0) throw new Exception("Divide by zero Exception");
+	if (this.sign==0) return new BigNumber();
+	if (bnum.length>this.length) return new BigNumber();
+	if (bnum.length==1) {
+	}
+	return new BigNumber(Operations.div(this.intArray,this.length,bnum.intArray,bnum.length),this.sign*bnum.sign);
     }
-	
+
+
     ///////////////////////End of operations//////////////////////////////////
     @Override
     public boolean equals(Object obj) {
 	if (obj == this) {
 	    return true;
 	}
+	//equals with BigInteger
+	//BigInteger has one bug when he doesn`t cut leading zero
+	//so sometimes equals work wrong!!!
+	if (obj instanceof BigInteger) {
+	    BigInteger bint = (BigInteger) obj;
+	    byte[] bi = bint.toByteArray();
+	    byte[] bn = this.toByteArray();
+	    int biLen=bi.length;
+	    int bnLen=bn.length;
+	    
+	    if (biLen!=bnLen){
+		return false;
+	    }
+            //if elements not the same    
+	    for (int i = 0; i < bnLen; i++) {
+		if(bi[i]!=bn[i]) return false;
+	    }
+	    return true;
+	}
+	
 	if (!(obj instanceof BigNumber)) {
 	    return false;
 	}
+	
 	BigNumber bnum = (BigNumber) obj;
-
+        //if lengths or signs differ
 	if (bnum.sign != this.sign || bnum.length != this.length) {
 	    return false;
 	}
+	//if elements not the same
 	for (int i = 0; i < this.length; i++) {
 	    if (bnum.intArray[i] != this.intArray[i]) {
 		return false;
@@ -226,6 +242,9 @@ public class BigNumber {
 	return true;
     }
     
+    //returns 1 if this>bnum
+    //returns -1 if this<bnum
+    //returns 0 if elements are the same
     public int compare(BigNumber bnum){
 	int cmp = Util.compareArrays(this.intArray, this.length, bnum.intArray, bnum.length);
 	return cmp;
@@ -235,11 +254,9 @@ public class BigNumber {
 	return sign;
     }
 
-    //Just changing sign(In BigInteger it changes elements(a -> -a+1))
+    //Just changing sign
     public BigNumber negate() {
 	//return new BigNumber(this.intArray, (-1) * sign);
-	//int[] result = Util.reverseCode(this.intArray,this.length);
-	//return new BigNumber(result,-this.sign);
 	return new BigNumber(intArray, -sign);
     }
 
@@ -249,18 +266,29 @@ public class BigNumber {
     //////////////////Вспомогательные функции////////////////////////
     
     private byte[] toByteArray(boolean reverse) {
-	if (this.sign==-1) {
-	    this.intArray=Util.reverseInts(this.intArray);
+	int[] array=this.intArray;
+	int len=this.length;
+	//leading null bytes in int
+	int freeBits=32-Util.bitLen(array[len-1]);
+	int freeBytes=freeBits%8==0 ? freeBits/8-1 : freeBits/8;
+	
+	if (this.sign==-1) {	    
+	    array=Util.reverseInts(this.intArray);
 	}
 	
-	int byteArrayLen = this.length * 4;
+	int byteArrayLen = (len-1) * 4 + (4 - freeBytes);
 	byte[] byteArray = new byte[byteArrayLen];
 
-	for (int i = 0; i < this.length; ++i) {
+	for (int i = 0; i < len-1; ++i) {
 	    for (int j = 0; j < 4; ++j) {
-		byteArray[i * 4 + j] = (byte) (this.intArray[i] >>> 8 * j);
+		byteArray[i * 4 + j] = (byte) (array[i] >>> 8 * j);
 	    }
 	}
+	
+	for (int j = 0; j < 4-freeBytes; ++j) {
+		byteArray[((len-1)*4)+j] = (byte) (array[len-1] >>> 8 * j);
+	}	
+
 	
 	if(reverse){
 	    return Util.reverseArray(Util.cutLeadingZero(byteArray));
@@ -268,7 +296,8 @@ public class BigNumber {
 	    return Util.cutLeadingZero(byteArray);
 	}
     }
-    //По умолчанию переворачиваем, т.к как храним наоборот.
+    
+    //reverse by default
     public byte[] toByteArray() {
 	return this.toByteArray(true);
     }

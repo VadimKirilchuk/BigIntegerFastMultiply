@@ -38,15 +38,15 @@ public class operationsTest extends TestCase {
 	byte[] byteArray2 = new byte[N2];
 
 	for (int i = 0; i < byteArray1.length; i++) {
-	    byteArray1[i]=(byte)(rnd.nextInt(Byte.MAX_VALUE)-2*rnd.nextInt(Byte.MAX_VALUE));
+	    byteArray1[i]=(byte)(rnd.nextInt(Byte.MAX_VALUE)-2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
 	
 	for (int i = 0; i < byteArray2.length; i++) {
 	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
 	
-	BigNumber bn1 = new BigNumber(byteArray1,1);
-	BigNumber bn2 = new BigNumber(byteArray2,1);
+	BigNumber bn1 = new BigNumber(byteArray1);
+	BigNumber bn2 = new BigNumber(byteArray2);
 	BigInteger bi1=new BigInteger(byteArray1);
 	BigInteger bi2=new BigInteger(byteArray2);
 
@@ -68,26 +68,18 @@ public class operationsTest extends TestCase {
 	    assertEquals("!Wrong element!",res1[i], res2[i]);
 	}
 	////////end of two positive
-	/*
+	
 	///////summ of positive and negative
 	//bn1
 	bn2=bn2.negate();
 	//bi1
 	bi2=bi2.negate();
 	
-	resultBn=bn1.add(bn2);
+	resultBn=bn1.add(bn2);	
+        res1=resultBn.toByteArray();
+	
 	resultBi=bi1.add(bi2);
-	
-	//returns 1 if bn1>bn2 and -1 if bn1<bn2
-	int cmp = bn1.compare(bn2);
-	
-	if (cmp!=0)
-	    res1=resultBn.toByteArray();
-	    if(cmp>0){
-	    res2 = resultBi.toByteArray();
-	} else if (cmp < 0) {
-	    res2 = resultBi.negate().toByteArray();
-	}
+	res2=resultBi.toByteArray();
 
 	assertEquals(res2[0]+"!Length not the same!", res1.length, res2.length);
 
@@ -102,20 +94,19 @@ public class operationsTest extends TestCase {
 	bi1=bi1.negate();
 	//bi2
 
-	resultBn = bn1.add(bn2);
-	resultBi = bi1.add(bi2);
-
-	res1 = resultBn.toByteArray();
-	//must negate because in biginteger method toByteArray watches sign!!
-	res2 = resultBi.negate().toByteArray();
+	resultBn=bn1.add(bn2);	
+        res1=resultBn.toByteArray();
+	
+	resultBi=bi1.add(bi2);
+	res2=resultBi.toByteArray();
 
 	assertEquals(res2[0]+"!Length not the same!", res1.length, res2.length);
 
 	for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
 	    assertEquals("!Wrong element!", res1[i], res2[i]);
 	}
-	//////end of negative and negative summ
-	*/
+	//////end of negative and negative summ		
+	
 	
     }
 
@@ -139,8 +130,8 @@ public class operationsTest extends TestCase {
 	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
 	
-	BigNumber bn1 = new BigNumber(byteArray1,1);
-	BigNumber bn2 = new BigNumber(byteArray2,1);
+	BigNumber bn1 = new BigNumber(byteArray1);
+	BigNumber bn2 = new BigNumber(byteArray2);
 	BigInteger bi1=new BigInteger(byteArray1);
 	BigInteger bi2=new BigInteger(byteArray2);
 
@@ -151,18 +142,11 @@ public class operationsTest extends TestCase {
 
 	////////////Sub of two positive numbers
 	BigNumber resultBn = bn1.sub(bn2);
+	res1=resultBn.toByteArray();
+	
 	BigInteger resultBi=bi1.subtract(bi2);
-	
-	int cmp = bn1.compare(bn2);
-	
-	if (cmp!=0)
-	    res1=resultBn.toByteArray();
-	    if(cmp>0){
-	    res2 = resultBi.toByteArray();
-	} else if (cmp < 0) {
-	    res2 =resultBi.negate().toByteArray();
-	}
-	
+        res2 = resultBi.toByteArray();
+	   
 	assertEquals(res2[0]+"!Length not the same!",res1.length, res2.length);
 	
 	for (int i = 0; i < Math.min(res1.length,res2.length); i++) {
@@ -197,17 +181,10 @@ public class operationsTest extends TestCase {
 	//bi2
 
 	resultBn = bn1.sub(bn2);
+        res1=resultBn.toByteArray();
+	
 	resultBi=bi1.subtract(bi2);
-	
-	cmp = bn1.compare(bn2);
-	
-	if (cmp!=0)
-	    res1=resultBn.toByteArray();
-	    if(cmp<0){
-	    res2 = resultBi.toByteArray();
-	} else if (cmp > 0) {
-	    res2 =resultBi.negate().toByteArray();
-	}
+	res2=resultBi.toByteArray();
 
 	assertEquals(res2[0]+"!Length not the same!", res1.length, res2.length);
 

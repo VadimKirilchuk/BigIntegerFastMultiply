@@ -140,9 +140,17 @@ public class Util {
     public static int[] addOne(int[] array){
 	int length = array.length;
 	int[] result = new int[length];
-	
-	for (int i = 0; i < length; i++) {
-	    result[i]=array[i]+1;
+	int i=0;
+	for (i = 0; i < length; ++i) {
+	    result[i]=(int)((array[i] & Util.LONG_MASK)+1);
+	    
+	    if (result[i] != 0){
+                ++i;
+		break;
+	    }
+	}
+	for (int j=i; j < length; ++j) {
+	    result[j]=array[j];
 	}
 	
 	return result;
@@ -152,17 +160,27 @@ public class Util {
 	int len = array.length;
 	
 	int[] result = new int[len];
-	for (int i = 0; i < len; i++) {
-	    result[i]=~array[i]+1;
+	int i=0;
+	for (i = 0; i < len; i++) {
+	    result[i]=(int)(((~array[i])&Util.LONG_MASK)+1);
+	    
+	    if (result[i] != 0){
+                ++i;
+		break;
+	    }
 	}
 	
+        for (int j=i; j < len; ++j) {
+	    result[j]=(int)((~array[j]) & Util.LONG_MASK);
+	}
+
 	return result;
     }
 
     /**
      * bitLen(val) is the number of bits in val.
      */
-    private static int bitLen(int w) {
+    public static int bitLen(int w) {
         // Binary search - decision tree (5 tests, rarely 6)
         return
          (w < 1<<15 ?

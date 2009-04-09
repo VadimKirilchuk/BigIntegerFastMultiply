@@ -11,6 +11,7 @@ package org.amse.vadim.bignumberslibrary;
 public class Dispersion {
 
     private int count;
+    private boolean converge;
     private final double trustPercent;
     private final int minimumElements;
     private final int maximumIterations;
@@ -25,6 +26,7 @@ public class Dispersion {
 	this.D = 0;
 	this.minimumElements = minimumElements;
 	this.maximumIterations=maximumIterations;
+	this.converge=true;
     }
 
     public boolean canTrust(int delta) {
@@ -40,25 +42,13 @@ public class Dispersion {
 	this.sqrM = (sqrM * (count - 1) + delta * delta) / count;
 
 	this.D = this.sqrM - this.M * this.M;
-	/*
-	D=this.D+oldM*oldM;
-	D=D*count-1;
-	D=D+delta*delta;
-	D=D/count;
-	D=D-this.M*this.M;
-	 */
-
+	
 	if (count < minimumElements) {
 	    return false;
 	}
 	
 	if (count==maximumIterations){
-	    System.out.println("(Maximum iterations was reached");
-	    if (this.getNu()<1) {
-		System.out.println("trustPercent is "+ 100*(1-this.getNu())+")");
-	    }else{
-		System.out.println("Sequence does not converge)");		
-	    }
+	    this.converge=false;
 	    return true;
 	}
 
@@ -80,5 +70,9 @@ public class Dispersion {
     
     public double getNu() {
 	return (Math.sqrt(this.D))/this.M;
+    }
+    
+    public boolean isConverged(){
+	return this.converge;
     }
 }
