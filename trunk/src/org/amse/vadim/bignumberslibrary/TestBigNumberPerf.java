@@ -27,8 +27,8 @@ public class TestBigNumberPerf {
 	//add("ADD.txt", from * 2048, points, minimumIterations, dispersionTrust, maxIterations);
 	//sub("SUB.txt", from * 2048, points, minimumIterations, dispersionTrust, maxIterations);
 	//mul("MUL.txt", from, points, minimumIterations, dispersionTrust, maxIterations);
-        mulFFT("FFT.txt", from  , points/2, minimumIterations/2, dispersionTrust , maxIterations/2);
-        mulFFT2("FFT2.txt", from  , points/2, minimumIterations/2, dispersionTrust , maxIterations/2);
+	mulFFT("FFT.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
+	mulFFT2("FFT2.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
     }
 
     public static void add(String fileName, int fromDim, int mulToEnd,
@@ -215,7 +215,7 @@ public class TestBigNumberPerf {
 		bn1.mulFFT(bn2);
 		t2 = System.currentTimeMillis();
 		delta = (int) (t2 - t1);
-		//System.out.println(Math.sqrt(disp.getDispersion()) / disp.getMean());
+	    //System.out.println(Math.sqrt(disp.getDispersion()) / disp.getMean());
 	    }
 
 	    out.print(disp.getMean());
@@ -283,7 +283,7 @@ public class TestBigNumberPerf {
 		bn1.mulFFT2(bn2);
 		t2 = System.currentTimeMillis();
 		delta = (int) (t2 - t1);
-		//System.out.println(Math.sqrt(disp.getDispersion()) / disp.getMean());
+	    //System.out.println(Math.sqrt(disp.getDispersion()) / disp.getMean());
 	    }
 
 	    out.print(disp.getMean());
@@ -302,7 +302,7 @@ public class TestBigNumberPerf {
 	}
 	out.close();
     }
-    
+
     public static void sub(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 

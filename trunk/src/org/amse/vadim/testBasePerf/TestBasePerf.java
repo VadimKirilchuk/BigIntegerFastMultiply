@@ -11,13 +11,11 @@ import java.math.BigInteger;
  *
  * @author chibis
  */
-
-
 public class TestBasePerf {
 
-    public static void run(int startDim, int mulToEnd, int trustPercent, int maximumIterations ) {
+    public static void run(int startDim, int mulToEnd, int trustPercent, int maximumIterations) {
 	java.util.Random rnd = new java.util.Random();
-        
+
 	byte[] byteArray1;
 	byte[] byteArray2;
 
@@ -28,15 +26,15 @@ public class TestBasePerf {
 	int[] intArray2;
 
 	for (int i = startDim; i < startDim * Math.pow(2, mulToEnd); i *= 2) {
-	    Dispersion byteDisp = new Dispersion(30, trustPercent,maximumIterations);//if nu<(maximumIterations-trust)/maximumIterations return true;
+	    Dispersion byteDisp = new Dispersion(30, trustPercent, maximumIterations);//if nu<(maximumIterations-trust)/maximumIterations return true;
 	    byteArray1 = new byte[i];
 	    byteArray2 = new byte[i];
 
-	    Dispersion shortDisp = new Dispersion(30, trustPercent,maximumIterations);
+	    Dispersion shortDisp = new Dispersion(30, trustPercent, maximumIterations);
 	    shortArray1 = new short[i / 2];
 	    shortArray2 = new short[i / 2];
 
-	    Dispersion intDisp = new Dispersion(30, trustPercent,maximumIterations);
+	    Dispersion intDisp = new Dispersion(30, trustPercent, maximumIterations);
 	    intArray1 = new int[i / 4];
 	    intArray2 = new int[i / 4];
 
@@ -68,7 +66,7 @@ public class TestBasePerf {
 	    }
 	    System.out.println("byteBase multiplyed by " + byteDisp.getMean());
 
-	    while (!shortDisp.canTrust(delta)) {		
+	    while (!shortDisp.canTrust(delta)) {
 		long t1 = System.currentTimeMillis();
 		multiply(shortArray1, shortArray1.length, shortArray2, shortArray2.length);
 		long t2 = System.currentTimeMillis();
@@ -83,7 +81,7 @@ public class TestBasePerf {
 		delta = (int) (t2 - t1);
 	    }
 	    System.out.println("intBase умножились за " + intDisp.getMean());
-	    
+
 	}
     }
 
@@ -150,7 +148,7 @@ public class TestBasePerf {
 		z[i + j] = (short) product;
 		carry = (product >>> 16);
 	    }
-	    z[i + j] = (short)carry;
+	    z[i + j] = (short) carry;
 	}
 	return z;
     }
@@ -170,7 +168,7 @@ public class TestBasePerf {
 	    z[j] = (byte) product;
 	    carry = (short) (product >>> 8);
 	}
-	z[j] =(byte) carry;
+	z[j] = (byte) carry;
 
 	int i = 1;
 

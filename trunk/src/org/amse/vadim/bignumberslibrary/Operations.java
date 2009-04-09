@@ -12,6 +12,7 @@ public class Operations {
 
     private Operations() {
     }
+
     public static int[] summ(int[] num1, int len1, int[] num2, int len2) {
 
 	if (len1 < len2) {
@@ -32,7 +33,7 @@ public class Operations {
 	//adding common parts
 	while (i < len2) {
 	    sum = (num1[i] & Util.LONG_MASK) +
-		  (num2[i] & Util.LONG_MASK) +(sum >>> 32);
+		    (num2[i] & Util.LONG_MASK) + (sum >>> 32);
 
 	    result[i] = (int) (sum);
 	    ++i;
@@ -98,7 +99,7 @@ public class Operations {
 
 	return result;
     }
-   
+
     public static int[] simpleMul(int[] array1, int len1, int[] array2, int len2) {
 
 	int[] z = new int[len1 + len2];
@@ -117,7 +118,7 @@ public class Operations {
 	z[j] = (int) carry;
 
 	int i = 1;
-	
+
 	for (; i < len2; ++i) {
 	    carry = 0;
 	    for (j = 0; j < len1; ++j) {
@@ -138,29 +139,29 @@ public class Operations {
 	Complex[] b = Convert.complexFrom(array2);
 
 	Complex[] result = Fourier2.fftMultiply(a, b);
-	
+
 	return Convert.byteFrom(result);
     }
-    
+
     public static byte[] mulFFT2(byte[] array1, byte[] array2) {
-	int len=Fourier.extendLength(array1.length, array2.length);
-	Complex[] a = Convert.complexFrom(array1,len);
-	Complex[] b = Convert.complexFrom(array2,len);
-	
+	int len = Fourier.extendLength(array1.length, array2.length);
+	Complex[] a = Convert.complexFrom(array1, len);
+	Complex[] b = Convert.complexFrom(array2, len);
+
 	Complex[] afft = Fourier.iterativeFFT(a, len, false);
 	Complex[] bfft = Fourier.iterativeFFT(b, len, false);
-	
+
 	Complex[] cfft = new Complex[len];
-	for (int i=0; i<len;++i){
-	    cfft[i]=afft[i].mul(bfft[i]);
+	for (int i = 0; i < len; ++i) {
+	    cfft[i] = afft[i].mul(bfft[i]);
 	}
-	
+
 	Complex[] c = Fourier.iterativeFFT(cfft, len, true);
-	
+
 	return Convert.byteFrom(c);
     }
 
-    public static int[] div(int[] number, int numLen, int[] divider, int dividerLen){
+    public static int[] div(int[] number, int numLen, int[] divider, int dividerLen) {
 	return null;
-    } 
+    }
 }

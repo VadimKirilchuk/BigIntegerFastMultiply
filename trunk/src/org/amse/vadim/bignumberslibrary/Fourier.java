@@ -19,7 +19,7 @@ public class Fourier {
 	Complex w = new Complex(1, 0);
 	Complex[] a1 = new Complex[n / 2];
 	Complex[] a2 = new Complex[n / 2];
-	for (int i = 0,  k = 0,  s = 0; i < trueLength; i++) {
+	for (int i = 0, k = 0, s = 0; i < trueLength; i++) {
 	    if (i % 2 == 0) {
 		a1[k++] = new Complex(a[i]);
 	    } else {

@@ -23,11 +23,5 @@ public class Main {
 	//Test.run3();
 	//new View();
 	//TestBigNumberPerf.runAll();
-	int[] ar = {1,65536};
-	BigNumber bn = new BigNumber(ar);
-	int[] res=bn.shiftLeft(96).getArrayOfBigNumber();
-	for (int i = 0; i < res.length; i++) {
-	    System.out.println(res[i]);
-	}
     }
 }
