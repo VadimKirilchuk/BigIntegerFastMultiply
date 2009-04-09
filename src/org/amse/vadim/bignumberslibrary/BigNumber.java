@@ -199,6 +199,30 @@ public class BigNumber {
 
 
     ///////////////////////End of operations//////////////////////////////////
+    public BigNumber shiftLeft(int n) {
+        if (this.sign == 0)
+            return new BigNumber();
+        if (n==0)
+            return this;
+        if (n<0)
+            return shiftRight(-n);
+	
+	int[] result = Util.leftShift(this.intArray, this.length, n);
+	return new BigNumber(result);	
+    }
+    
+    public BigNumber shiftRight(int n) {
+        if (this.sign == 0)
+            return new BigNumber();
+        if (n==0)
+            return this;
+        if (n<0)
+            return shiftLeft(-n);
+	
+	return null;
+    }    
+    
+    
     @Override
     public boolean equals(Object obj) {
 	if (obj == this) {

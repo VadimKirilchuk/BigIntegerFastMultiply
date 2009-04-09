@@ -220,4 +220,63 @@ public class Util {
 	
 	return result;
     }
+    
+    public static void primitiveLeftShift(int[] a, int len, int n) {
+        //remove or stay???
+	if (len == 0 || n == 0)
+            return;
+
+        int n2 = 32 - n;
+        for (int i=len-1, c=a[i]; i>0; --i) {
+            int b = c;
+            c = a[i-1];
+            a[i] = (b << n) | (c >>> n2);
+        }
+        a[0] <<= n;
+    }
+    
+    public static void primitiveRightShift(int[] a, int len, int n) {
+	//remove or stay???
+	if (len == 0 || n == 0) {
+	    return;
+	}
+	int n2 = 32 - n;
+	for (int i = 0, c = a[i]; i < len - 2; ++i) {
+	    int tmp = c;
+	    c = a[i + 1];
+	    a[i] = (c << n2) | (tmp >>> n);
+	}
+	a[len - 1] >>>= n;
+    }
+    
+    public static int[] leftShift(int[] a, int len, int n) {
+        //how much 32shifts
+	int nInts = n >>> 5;
+	//how much bit<32 shifts
+        int nBits = n & 0x1F;
+	int bitsInHighWord = bitLen(a[len-1]);
+        
+        // If shift can be done without recopy, do so
+        if (n <= (32-bitsInHighWord)) {
+            primitiveLeftShift(a, len, nBits);
+            return a;
+        } else { // Array must be resized
+            if (nBits <= (32-bitsInHighWord)) {
+                int result[] = new int[nInts+len];
+                for (int i=len-1; i>=0; --i){
+                    result[result.length-len+i] = a[i];
+		}//проверить этот случай!!!
+                primitiveLeftShift(result, result.length, nBits);
+                return result;
+            } else {
+                int result[] = new int[nInts+len+1];
+                for (int i=len-1; i>=0; --i){
+                    result[result.length-len+i-1] = a[i];
+		}
+                primitiveLeftShift(result, result.length, nBits);
+                return result;
+            }
+        }
+    }
+
 }
