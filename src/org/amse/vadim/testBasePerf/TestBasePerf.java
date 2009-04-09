@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.amse.vadim.bignumberslibrary;
+package org.amse.vadim.testBasePerf;
 
+import org.amse.vadim.bignumberslibrary.*;
 import java.math.BigInteger;
 
 /**
@@ -13,12 +14,10 @@ import java.math.BigInteger;
 
 
 public class TestBasePerf {
-    //startDim is in byte! Recommended more than 1024
-    //mulToEnd - how much points. (startDim*2,startDim*4,..startDim*2^mulToEnd) 
-    //trustPercent - if nu<(maximumIterations-trustDispersion)/maximumIterations the result is true.
+
     public static void run(int startDim, int mulToEnd, int trustPercent, int maximumIterations ) {
 	java.util.Random rnd = new java.util.Random();
-
+        
 	byte[] byteArray1;
 	byte[] byteArray2;
 
@@ -57,7 +56,7 @@ public class TestBasePerf {
 	    }
 
 
-	    System.out.println("////////////////////Размер в байтах=" + i + "////////////////////////");
+	    System.out.println("////////////////////bytes=" + i + "////////////////////////");
 
 	    int delta = 1;
 
@@ -67,7 +66,7 @@ public class TestBasePerf {
 		long t2 = System.currentTimeMillis();
 		delta = (int) (t2 - t1);
 	    }
-	    System.out.println("Byte умножились за " + byteDisp.getMean());
+	    System.out.println("byteBase multiplyed by " + byteDisp.getMean());
 
 	    while (!shortDisp.canTrust(delta)) {		
 		long t1 = System.currentTimeMillis();
@@ -75,7 +74,7 @@ public class TestBasePerf {
 		long t2 = System.currentTimeMillis();
 		delta = (int) (t2 - t1);
 	    }
-	    System.out.println("Short умножились за " + shortDisp.getMean());
+	    System.out.println("shortBase multiplyed by " + shortDisp.getMean());
 
 	    while (!intDisp.canTrust(delta)) {
 		long t1 = System.currentTimeMillis();
@@ -83,7 +82,7 @@ public class TestBasePerf {
 		long t2 = System.currentTimeMillis();
 		delta = (int) (t2 - t1);
 	    }
-	    System.out.println("Int умножились за " + intDisp.getMean());
+	    System.out.println("intBase умножились за " + intDisp.getMean());
 	    
 	}
     }
@@ -92,7 +91,7 @@ public class TestBasePerf {
 
 	int[] z = new int[len1 + len2];
 
-	int carry = 0;
+	long carry = 0;
 
 	int j = 0;
 
@@ -101,7 +100,7 @@ public class TestBasePerf {
 		    (array1[j] & Util.LONG_MASK) +
 		    carry;
 	    z[j] = (int) product;
-	    carry = (int) (product >>> 32);
+	    carry = (product >>> 32);
 	}
 	z[j] = (int) carry;
 
@@ -115,9 +114,9 @@ public class TestBasePerf {
 			(z[i + j] & Util.LONG_MASK) +
 			carry;
 		z[i + j] = (int) product;
-		carry = (int) (product >>> 32);
+		carry = (product >>> 32);
 	    }
-	    z[i + j] = carry;
+	    z[i + j] = (int) carry;
 	}
 	return z;
     }
@@ -126,7 +125,7 @@ public class TestBasePerf {
 
 	short[] z = new short[len1 + len2];
 
-	short carry = 0;
+	int carry = 0;
 
 	int j = 0;
 
@@ -135,9 +134,9 @@ public class TestBasePerf {
 		    (array1[j] & 0xffff) +
 		    carry;
 	    z[j] = (short) product;
-	    carry = (short) (product >>> 16);
+	    carry = (product >>> 16);
 	}
-	z[j] = carry;
+	z[j] = (short) carry;
 
 	int i = 1;
 
@@ -149,9 +148,9 @@ public class TestBasePerf {
 			(z[i + j] & 0xffff) +
 			carry;
 		z[i + j] = (short) product;
-		carry = (short) (product >>> 16);
+		carry = (product >>> 16);
 	    }
-	    z[i + j] = carry;
+	    z[i + j] = (short)carry;
 	}
 	return z;
     }
@@ -160,7 +159,7 @@ public class TestBasePerf {
 
 	byte[] z = new byte[len1 + len2];
 
-	byte carry = 0;
+	short carry = 0;
 
 	int j = 0;
 
@@ -169,9 +168,9 @@ public class TestBasePerf {
 		    (array1[j] & 0xff) +
 		    carry);
 	    z[j] = (byte) product;
-	    carry = (byte) (product >>> 8);
+	    carry = (short) (product >>> 8);
 	}
-	z[j] = carry;
+	z[j] =(byte) carry;
 
 	int i = 1;
 
@@ -183,9 +182,9 @@ public class TestBasePerf {
 			(z[i + j] & 0xff) +
 			carry);
 		z[i + j] = (byte) product;
-		carry = (byte) (product >>> 8);
+		carry = (short) (product >>> 8);
 	    }
-	    z[i + j] = carry;
+	    z[i + j] = (byte) carry;
 	}
 	return z;
     }

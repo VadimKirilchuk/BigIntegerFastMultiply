@@ -20,7 +20,8 @@ public class Main {
 	//TestBasePerf.run(1024,6, 70,200);
 	//TestBigNumberPerf.runAll();
 	//Test.mulFFT();
-	Test.run();
+	//Test.run3();
 	//new View();
+	TestBigNumberPerf.runAll();
     }
 }
