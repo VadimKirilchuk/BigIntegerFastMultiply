@@ -4,7 +4,6 @@ public class Complex {
 
     protected static final double PI = Math.PI;
     protected static final double TWO_PI = 2.0 * PI;
-    
     public double re;
     public double im;
 

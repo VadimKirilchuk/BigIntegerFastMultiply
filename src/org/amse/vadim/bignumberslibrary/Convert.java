@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.amse.vadim.bignumberslibrary;
 
 /**
@@ -10,9 +9,9 @@ package org.amse.vadim.bignumberslibrary;
  * @author chibis
  */
 public class Convert {
-    
-    private Convert(){}
-   
+
+    private Convert() {
+    }
     //Convert from byteArray to intArray without leading zeroes.
     public static int[] intFrom(byte[] src) {
 	int keep;
@@ -57,32 +56,32 @@ public class Convert {
 	return Util.cutLeadingZero(byteArray);
     }
 
-    public static Complex[] complexFrom(byte[] src){
-	int len=src.length;
-	Complex[] result=new Complex[len];
+    public static Complex[] complexFrom(byte[] src) {
+	int len = src.length;
+	Complex[] result = new Complex[len];
 	for (int i = 0; i < len; i++) {
-	   result[i]=new Complex(src[i] & 0xFF);
+	    result[i] = new Complex(src[i] & 0xFF);
 	}
 	return result;
     }
-    
-    public static Complex[] complexFrom(byte[] src, int length){
-	int len=length;
-	Complex[] result=new Complex[len];
-	
+
+    public static Complex[] complexFrom(byte[] src, int length) {
+	int len = length;
+	Complex[] result = new Complex[len];
+
 	int srcLen = src.length;
 	for (int i = 0; i < len; i++) {
-	   if(i<srcLen){
-	    result[i]=new Complex(src[i] & 0xFF);
-	   } else{
-	       result[i]= new Complex();
-	   }
+	    if (i < srcLen) {
+		result[i] = new Complex(src[i] & 0xFF);
+	    } else {
+		result[i] = new Complex();
+	    }
 	}
-	
+
 	return result;
-    }    
-    
-    public static byte[] byteFrom(Complex[] src){
+    }
+
+    public static byte[] byteFrom(Complex[] src) {
 	int len = src.length;
 
 	byte[] result = new byte[len];
@@ -90,7 +89,7 @@ public class Convert {
 	int carry = 0;
 
 	for (int i = 0; i < len; i++) {
-	    int buff = (int)Math.round(src[i].re() + carry);
+	    int buff = (int) Math.round(src[i].re() + carry);
 	    result[i] = (byte) buff;
 	    carry = (buff >>> 8);
 	}

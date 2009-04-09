@@ -20,24 +20,24 @@ public class BigNumber {
     //constructor from bytes with optional reverse
     private BigNumber(byte[] array, int sign, boolean reverse) {
 	if (array == null || array.length == 0) {
-		this.sign = 0;
-		this.intArray = null;
-		this.length = 0;	
+	    this.sign = 0;
+	    this.intArray = null;
+	    this.length = 0;
 	} else {
 	    //reverse in first determination only. Not in operations.
-	    if(reverse){
-		this.intArray=Convert.intFrom(Util.reverseArray(array));
-	    }else{
-		this.intArray=Convert.intFrom(array);
+	    if (reverse) {
+		this.intArray = Convert.intFrom(Util.reverseArray(array));
+	    } else {
+		this.intArray = Convert.intFrom(array);
 	    }
 	    this.length = this.intArray.length;
 	    this.sign = (sign > 0 ? 1 : -1);
 	}
-    }    
+    }
     //Constructor from byteArray with SIGN
     //reverse=true
     public BigNumber(byte[] array, int sign) {
-	this(array,sign,true);
+	this(array, sign, true);
     }
 
     //Constructor like in BigInteger. With support of complement code
@@ -46,23 +46,23 @@ public class BigNumber {
 	    this.sign = 0;
 	    this.intArray = null;
 	    this.length = 0;
-	} else if(array[0]<0){
-	    this.sign=-1;
-	    this.intArray=Util.addOne(Convert.intFrom(Util.reverseArray(Util.makePositive(array))));
-	    
+	} else if (array[0] < 0) {
+	    this.sign = -1;
+	    this.intArray = Util.addOne(Convert.intFrom(Util.reverseArray(Util.makePositive(array))));
+
 	} else {
-	    this.sign=1;
+	    this.sign = 1;
 	    this.intArray = Convert.intFrom(Util.reverseArray(array));
 	}
-	    this.length = this.intArray.length;
+	this.length = this.intArray.length;
     }
 
     //only BigNumber(not compatable with BigInteger) constructor.
     public BigNumber(int[] array, int sign) {
 	if (array == null || array.length == 0) {
-	    	this.sign = 0;
-		this.intArray = null;
-		this.length = 0;	    
+	    this.sign = 0;
+	    this.intArray = null;
+	    this.length = 0;
 	} else {
 	    this.intArray = array;
 	    this.length = Util.cutLeadingZero(this.intArray, this.intArray.length);
@@ -83,8 +83,6 @@ public class BigNumber {
 	this.length = 0;
     }
 //////////////////////////////////End of Constructors///////////////////////////////    
-
-
     //---------------------------------//
     //           OPERATIONS            //
     //---------------------------------//
@@ -111,7 +109,7 @@ public class BigNumber {
 
 	resultArray = (cmp > 0 ? Operations.subtract(this.intArray, this.length, bnum.intArray, bnum.length)
 		: Operations.subtract(bnum.intArray, bnum.length, this.intArray, this.length));
- 
+
 	//Leading Zero will be cutted in constructor
 
 	return new BigNumber(resultArray, cmp * this.sign);
@@ -131,7 +129,7 @@ public class BigNumber {
 		    this.sign);
 	}
 
-	int cmp =Util.compareArrays(this.intArray, this.length, bnum.intArray, bnum.length);
+	int cmp = Util.compareArrays(this.intArray, this.length, bnum.intArray, bnum.length);
 
 	//if arrays are equal and signs are opposite
 	if (cmp == 0) {
@@ -142,9 +140,9 @@ public class BigNumber {
 
 	resultArray = (cmp > 0 ? Operations.subtract(this.intArray, this.length, bnum.intArray, bnum.length)
 		: Operations.subtract(bnum.intArray, bnum.length, this.intArray, this.length));
-        
+
 	//Leading Zero will be cutted in constructor
-	
+
 	return new BigNumber(resultArray, cmp * this.sign);
 
     }
@@ -164,65 +162,73 @@ public class BigNumber {
 	if (sign == 0 || bnum.sign == 0) {
 	    return new BigNumber();
 	}
-        
+
 	//Doing fourier transform in bytes
-	byte[] a=this.toByteArray(false);
-	byte[] b=bnum.toByteArray(false);
-	
-	byte[] result = Operations.mulFFT(a,b);
+	byte[] a = this.toByteArray(false);
+	byte[] b = bnum.toByteArray(false);
+
+	byte[] result = Operations.mulFFT(a, b);
 
 	return new BigNumber(result, this.sign * bnum.sign, false);
     }
-        public BigNumber mulFFT2(BigNumber bnum) {
+
+    public BigNumber mulFFT2(BigNumber bnum) {
 	if (sign == 0 || bnum.sign == 0) {
 	    return new BigNumber();
 	}
-        
+
 	//Doing fourier transform in bytes
-	byte[] a=this.toByteArray(false);
-	byte[] b=bnum.toByteArray(false);
-	
-	byte[] result = Operations.mulFFT2(a,b);
+	byte[] a = this.toByteArray(false);
+	byte[] b = bnum.toByteArray(false);
+
+	byte[] result = Operations.mulFFT2(a, b);
 
 	return new BigNumber(result, this.sign * bnum.sign, false);
-    }	
+    }
     //Not Supported yet!!!
     //Divide like "/" - not like "/ + %"
     public BigNumber div(BigNumber bnum) throws Exception {
-	if (bnum.sign==0) throw new Exception("Divide by zero Exception");
-	if (this.sign==0) return new BigNumber();
-	if (bnum.length>this.length) return new BigNumber();
-	if (bnum.length==1) {
+	if (bnum.sign == 0) {
+	    throw new Exception("Divide by zero Exception");
 	}
-	return new BigNumber(Operations.div(this.intArray,this.length,bnum.intArray,bnum.length),this.sign*bnum.sign);
+	if (this.sign == 0) {
+	    return new BigNumber();
+	}
+	if (bnum.length > this.length) {
+	    return new BigNumber();
+	}
+	if (bnum.length == 1) {
+	}
+	return new BigNumber(Operations.div(this.intArray, this.length, bnum.intArray, bnum.length), this.sign * bnum.sign);
     }
-
-
     ///////////////////////End of operations//////////////////////////////////
     public BigNumber shiftLeft(int n) {
-        if (this.sign == 0)
-            return new BigNumber();
-        if (n==0)
-            return this;
-        if (n<0)
-            return shiftRight(-n);
-	
+	if (this.sign == 0) {
+	    return new BigNumber();
+	}
+	if (n == 0) {
+	    return this;
+	}
+	if (n < 0) {
+	    return shiftRight(-n);
+	}
 	int[] result = Util.leftShift(this.intArray, this.length, n);
-	return new BigNumber(result);	
+	return new BigNumber(result);
     }
-    
+
     public BigNumber shiftRight(int n) {
-        if (this.sign == 0)
-            return new BigNumber();
-        if (n==0)
-            return this;
-        if (n<0)
-            return shiftLeft(-n);
-	
+	if (this.sign == 0) {
+	    return new BigNumber();
+	}
+	if (n == 0) {
+	    return this;
+	}
+	if (n < 0) {
+	    return shiftLeft(-n);
+	}
 	return null;
-    }    
-    
-    
+    }
+
     @Override
     public boolean equals(Object obj) {
 	if (obj == this) {
@@ -235,25 +241,27 @@ public class BigNumber {
 	    BigInteger bint = (BigInteger) obj;
 	    byte[] bi = bint.toByteArray();
 	    byte[] bn = this.toByteArray();
-	    int biLen=bi.length;
-	    int bnLen=bn.length;
-	    
-	    if (biLen!=bnLen){
+	    int biLen = bi.length;
+	    int bnLen = bn.length;
+
+	    if (biLen != bnLen) {
 		return false;
 	    }
-            //if elements not the same    
+	    //if elements not the same    
 	    for (int i = 0; i < bnLen; i++) {
-		if(bi[i]!=bn[i]) return false;
+		if (bi[i] != bn[i]) {
+		    return false;
+		}
 	    }
 	    return true;
 	}
-	
+
 	if (!(obj instanceof BigNumber)) {
 	    return false;
 	}
-	
+
 	BigNumber bnum = (BigNumber) obj;
-        //if lengths or signs differ
+	//if lengths or signs differ
 	if (bnum.sign != this.sign || bnum.length != this.length) {
 	    return false;
 	}
@@ -265,11 +273,10 @@ public class BigNumber {
 	}
 	return true;
     }
-    
     //returns 1 if this>bnum
     //returns -1 if this<bnum
     //returns 0 if elements are the same
-    public int compare(BigNumber bnum){
+    public int compare(BigNumber bnum) {
 	int cmp = Util.compareArrays(this.intArray, this.length, bnum.intArray, bnum.length);
 	return cmp;
     }
@@ -288,42 +295,39 @@ public class BigNumber {
 	return this.intArray;
     }
     //////////////////Вспомогательные функции////////////////////////
-    
     private byte[] toByteArray(boolean reverse) {
-	int[] array=this.intArray;
-	int len=this.length;
+	int[] array = this.intArray;
+	int len = this.length;
 	//leading null bytes in int
-	int freeBits=32-Util.bitLen(array[len-1]);
-	int freeBytes=freeBits%8==0 ? freeBits/8-1 : freeBits/8;
-	
-	if (this.sign==-1) {	    
-	    array=Util.reverseInts(this.intArray);
+	int freeBits = 32 - Util.bitLen(array[len - 1]);
+	int freeBytes = freeBits % 8 == 0 ? freeBits / 8 - 1 : freeBits / 8;
+
+	if (this.sign == -1) {
+	    array = Util.reverseInts(this.intArray);
 	}
-	
-	int byteArrayLen = (len-1) * 4 + (4 - freeBytes);
+
+	int byteArrayLen = (len - 1) * 4 + (4 - freeBytes);
 	byte[] byteArray = new byte[byteArrayLen];
 
-	for (int i = 0; i < len-1; ++i) {
+	for (int i = 0; i < len - 1; ++i) {
 	    for (int j = 0; j < 4; ++j) {
 		byteArray[i * 4 + j] = (byte) (array[i] >>> 8 * j);
 	    }
 	}
-	
-	for (int j = 0; j < 4-freeBytes; ++j) {
-		byteArray[((len-1)*4)+j] = (byte) (array[len-1] >>> 8 * j);
-	}	
 
-	
-	if(reverse){
+	for (int j = 0; j < 4 - freeBytes; ++j) {
+	    byteArray[((len - 1) * 4) + j] = (byte) (array[len - 1] >>> 8 * j);
+	}
+
+
+	if (reverse) {
 	    return Util.reverseArray(Util.cutLeadingZero(byteArray));
-	}else{
+	} else {
 	    return Util.cutLeadingZero(byteArray);
 	}
     }
-    
     //reverse by default
     public byte[] toByteArray() {
 	return this.toByteArray(true);
     }
-        
 }

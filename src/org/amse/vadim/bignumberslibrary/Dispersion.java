@@ -25,8 +25,8 @@ public class Dispersion {
 	this.M = 0;
 	this.D = 0;
 	this.minimumElements = minimumElements;
-	this.maximumIterations=maximumIterations;
-	this.converge=true;
+	this.maximumIterations = maximumIterations;
+	this.converge = true;
     }
 
     public boolean canTrust(int delta) {
@@ -42,13 +42,13 @@ public class Dispersion {
 	this.sqrM = (sqrM * (count - 1) + delta * delta) / count;
 
 	this.D = this.sqrM - this.M * this.M;
-	
+
 	if (count < minimumElements) {
 	    return false;
 	}
-	
-	if (count==maximumIterations){
-	    this.converge=false;
+
+	if (count == maximumIterations) {
+	    this.converge = false;
 	    return true;
 	}
 
@@ -67,12 +67,12 @@ public class Dispersion {
     public double getMean() {
 	return M;
     }
-    
+
     public double getNu() {
-	return (Math.sqrt(this.D))/this.M;
+	return (Math.sqrt(this.D)) / this.M;
     }
-    
-    public boolean isConverged(){
+
+    public boolean isConverged() {
 	return this.converge;
     }
 }
