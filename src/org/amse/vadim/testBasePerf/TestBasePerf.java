@@ -5,8 +5,6 @@
 package org.amse.vadim.testBasePerf;
 
 import org.amse.vadim.bignumberslibrary.*;
-import java.math.BigInteger;
-
 /**
  *
  * @author chibis
@@ -80,7 +78,7 @@ public class TestBasePerf {
 		long t2 = System.currentTimeMillis();
 		delta = (int) (t2 - t1);
 	    }
-	    System.out.println("intBase умножились за " + intDisp.getMean());
+	    System.out.println("intBase multiplyed by " + intDisp.getMean());
 
 	}
     }

@@ -27,8 +27,10 @@ public class TestBigNumberPerf {
 	//add("ADD.txt", from * 2048, points, minimumIterations, dispersionTrust, maxIterations);
 	//sub("SUB.txt", from * 2048, points, minimumIterations, dispersionTrust, maxIterations);
 	//mul("MUL.txt", from, points, minimumIterations, dispersionTrust, maxIterations);
-	mulFFT("FFT.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
-	mulFFT2("FFT2.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
+	//mulFFT("FFT.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
+	//mulFFT2("FFT2.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
+	mulFFT1vsFFT2("FFT1vsFFT2.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
+	mulFFT2vsFFT3("FFT1vsFFT3.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
     }
 
     public static void add(String fileName, int fromDim, int mulToEnd,
@@ -302,7 +304,143 @@ public class TestBigNumberPerf {
 	}
 	out.close();
     }
+    
+    public static void mulFFT1vsFFT2(String fileName, int fromDim, int mulToEnd,
+	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
+	java.io.File file = new java.io.File(fileName);
+	if (!file.exists()) {
+	    file.createNewFile();
+	}
+	java.io.PrintWriter out = new java.io.PrintWriter(file);
+
+	out.print("Bytes ");
+	out.print("recursive ");
+	out.print("iterative ");
+	out.println();
+
+	byte[] byteArray1;
+	byte[] byteArray2;
+
+	for (int i = fromDim; i < fromDim * Math.pow(2, mulToEnd); i *= 2) {
+
+	    byteArray1 = new byte[i];
+	    byteArray2 = new byte[i];
+
+	    out.print(i);
+	    out.print(" ");
+
+	    // Инициализация массива	
+	    for (int j = 0; j < i; ++j) {
+		byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
+		byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
+	    }
+
+	    BigNumber bn1 = new BigNumber(byteArray1);
+	    BigNumber bn2 = new BigNumber(byteArray2);
+
+	    BigNumber bn3 = new BigNumber(byteArray1);
+	    BigNumber bn4 = new BigNumber(byteArray2);
+
+	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
+	    int delta = 1;
+
+	    long t1;
+	    long t2;
+
+	    while (!disp.canTrust(delta)) {
+		t1 = System.currentTimeMillis();
+		bn1.mulFFT(bn2);
+		t2 = System.currentTimeMillis();
+		delta = (int) (t2 - t1);
+	    //System.out.println(Math.sqrt(disp.getDispersion()) / disp.getMean());
+	    }
+
+	    out.print(disp.getMean());
+	    out.print(" ");
+
+	    disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
+
+	    while (!disp.canTrust(delta)) {
+		t1 = System.currentTimeMillis();
+		bn3.mulFFT2(bn4);
+		t2 = System.currentTimeMillis();
+		delta = (int) (t2 - t1);
+	    }
+	    out.print(disp.getMean());
+	    out.println();
+	}
+	out.close();
+    }    
+    
+    public static void mulFFT2vsFFT3(String fileName, int fromDim, int mulToEnd,
+	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
+
+	java.io.File file = new java.io.File(fileName);
+	if (!file.exists()) {
+	    file.createNewFile();
+	}
+	java.io.PrintWriter out = new java.io.PrintWriter(file);
+
+	out.print("Bytes ");
+	out.print("iterative ");
+	out.print("shortIter ");
+	out.println();
+
+	byte[] byteArray1;
+	byte[] byteArray2;
+
+	for (int i = fromDim; i < fromDim * Math.pow(2, mulToEnd); i *= 2) {
+
+	    byteArray1 = new byte[i];
+	    byteArray2 = new byte[i];
+
+	    out.print(i);
+	    out.print(" ");
+
+	    // Инициализация массива	
+	    for (int j = 0; j < i; ++j) {
+		byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
+		byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
+	    }
+
+	    BigNumber bn1 = new BigNumber(byteArray1);
+	    BigNumber bn2 = new BigNumber(byteArray2);
+
+	    BigNumber bn3 = new BigNumber(byteArray1);
+	    BigNumber bn4 = new BigNumber(byteArray2);
+
+	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
+	    int delta = 1;
+
+	    long t1;
+	    long t2;
+
+	    while (!disp.canTrust(delta)) {
+		t1 = System.currentTimeMillis();
+		bn1.mulFFT2(bn2);
+		t2 = System.currentTimeMillis();
+		delta = (int) (t2 - t1);
+	    //System.out.println(Math.sqrt(disp.getDispersion()) / disp.getMean());
+	    }
+
+	    out.print(disp.getMean());
+	    out.print(" ");
+
+	    disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
+
+	    while (!disp.canTrust(delta)) {
+		t1 = System.currentTimeMillis();
+		bn3.mulFFT3(bn4);
+		t2 = System.currentTimeMillis();
+		delta = (int) (t2 - t1);
+	    }
+	    out.print(disp.getMean());
+	    out.println();
+	}
+	out.close();
+    }    
+    
     public static void sub(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 

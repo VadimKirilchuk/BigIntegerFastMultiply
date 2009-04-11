@@ -185,6 +185,20 @@ public class BigNumber {
 
 	return new BigNumber(result, this.sign * bnum.sign, false);
     }
+    
+    public BigNumber mulFFT3(BigNumber bnum) {
+	if (sign == 0 || bnum.sign == 0) {
+	    return new BigNumber();
+	}
+
+	//Doing fourier transform in shorts
+	short[] a = Convert.shortFrom(this.intArray,this.length);
+	short[] b = Convert.shortFrom(bnum.intArray,bnum.length);
+
+	byte[] result = Operations.mulFFT3(a, b);
+
+	return new BigNumber(result, this.sign * bnum.sign, false);
+    }
     //Not Supported yet!!!
     //Divide like "/" - not like "/ + %"
     public BigNumber div(BigNumber bnum) throws Exception {

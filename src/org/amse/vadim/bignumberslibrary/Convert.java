@@ -55,6 +55,18 @@ public class Convert {
 	}
 	return Util.cutLeadingZero(byteArray);
     }
+    
+    public static short[] shortFrom(int[] src, int length) {
+	int shortArrayLen = length * 2;
+	short[] shortArray = new short[shortArrayLen];
+
+	for (int i = 0; i < length; ++i) {
+	    for (int j = 0; j < 2; ++j) {
+		shortArray[i * 2 + j] = (short) (src[i] >>> 16 * j);
+	    }
+	}
+	return shortArray;
+    }    
 
     public static Complex[] complexFrom(byte[] src) {
 	int len = src.length;
@@ -81,6 +93,22 @@ public class Convert {
 	return result;
     }
 
+    public static Complex[] complexFrom(short[] src, int length) {
+	int len = length;
+	Complex[] result = new Complex[len];
+
+	int srcLen = src.length;
+	for (int i = 0; i < len; i++) {
+	    if (i < srcLen) {
+		result[i] = new Complex(src[i] & 0xFF);
+	    } else {
+		result[i] = new Complex();
+	    }
+	}
+
+	return result;
+    }    
+    
     public static byte[] byteFrom(Complex[] src) {
 	int len = src.length;
 
@@ -95,4 +123,19 @@ public class Convert {
 	}
 	return Util.cutLeadingZero(result);
     }
+    
+    public static byte[] byteFrom2(Complex[] src) {
+	int len = src.length;
+
+	byte[] result = new byte[len];
+
+	long carry = 0;
+	
+	for (int i = 0; i < len; i++) {
+	    long buff =  Math.round(src[i].re() + carry);
+	    result[i] = (byte) buff;
+	    carry = (buff >>> 8);
+	}
+	return Util.cutLeadingZero(result);
+    }    
 }

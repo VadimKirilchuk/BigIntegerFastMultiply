@@ -23,8 +23,8 @@ public class Test {
 	int N1 = rnd.nextInt(Short.MAX_VALUE);
 	int N2 = rnd.nextInt(Short.MAX_VALUE);
 
-	//byte[] byteArray1 = {-40,1};
-	//byte[] byteArray2 = {-97,2};
+	//byte[] byteArray1 = {-34,-96};
+	//byte[] byteArray2 = {95,44};
 
 	byte[] byteArray1 = new byte[2];
 	byte[] byteArray2 = new byte[2];
