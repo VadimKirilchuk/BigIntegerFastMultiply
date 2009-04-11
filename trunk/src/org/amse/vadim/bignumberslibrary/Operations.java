@@ -160,6 +160,24 @@ public class Operations {
 
 	return Convert.byteFrom(c);
     }
+    
+    public static byte[] mulFFT3(short[] array1, short[] array2) {
+	int len = Fourier.extendLength(array1.length, array2.length);
+	Complex[] a = Convert.complexFrom(array1, len);
+	Complex[] b = Convert.complexFrom(array2, len);
+
+	Complex[] afft = Fourier.iterativeFFT(a, len, false);
+	Complex[] bfft = Fourier.iterativeFFT(b, len, false);
+
+	Complex[] cfft = new Complex[len];
+	for (int i = 0; i < len; ++i) {
+	    cfft[i] = afft[i].mul(bfft[i]);
+	}
+
+	Complex[] c = Fourier.iterativeFFT(cfft, len, true);
+
+	return Convert.byteFrom2(c);
+    }    
 
     public static int[] div(int[] number, int numLen, int[] divider, int dividerLen) {
 	return null;
