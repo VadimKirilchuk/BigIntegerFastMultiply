@@ -213,7 +213,7 @@ public class BigNumber {
 	    return shiftRight(-n);
 	}
 	int[] result = Util.leftShift(this.intArray, this.length, n);
-	return new BigNumber(result);
+	return new BigNumber(result,this.sign);
     }
 
     public BigNumber shiftRight(int n) {
@@ -226,7 +226,9 @@ public class BigNumber {
 	if (n < 0) {
 	    return shiftLeft(-n);
 	}
-	return null;
+	
+	int[] result = Util.rightShift(this.intArray, this.length, n);
+	return new BigNumber(result,this.sign);
     }
 
     @Override
@@ -287,7 +289,6 @@ public class BigNumber {
 
     //Just changing sign
     public BigNumber negate() {
-	//return new BigNumber(this.intArray, (-1) * sign);
 	return new BigNumber(intArray, -sign);
     }
 
