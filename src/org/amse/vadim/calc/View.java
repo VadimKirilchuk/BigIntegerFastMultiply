@@ -31,8 +31,8 @@ public class View extends JFrame {
 	this.setLayout(new GridBagLayout());
 
 	input = new JTextField();
-	input.addActionListener(new entered());
-	input.addKeyListener(new keyListener());
+	input.addActionListener(new Entered());
+	input.addKeyListener(new KeyAction());
 
 	history = new JTextArea();
 	history.setEditable(false);
@@ -60,7 +60,7 @@ public class View extends JFrame {
 	setVisible(true);
     }
 
-    public class entered implements ActionListener {
+    public class Entered implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 	    history.append(input.getText() + newline);
@@ -70,7 +70,7 @@ public class View extends JFrame {
 	}
     }
 
-    public class keyListener implements KeyListener {
+    public class KeyAction implements KeyListener {
 
 	public void keyTyped(KeyEvent e) {
 	}

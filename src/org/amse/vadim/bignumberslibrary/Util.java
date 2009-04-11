@@ -182,7 +182,22 @@ public class Util {
      */
     public static int bitLen(int w) {
 	// Binary search - decision tree (5 tests, rarely 6)
-	return (w < 1 << 15 ? (w < 1 << 7 ? (w < 1 << 3 ? (w < 1 << 1 ? (w < 1 << 0 ? (w < 0 ? 32 : 0) : 1) : (w < 1 << 2 ? 2 : 3)) : (w < 1 << 5 ? (w < 1 << 4 ? 4 : 5) : (w < 1 << 6 ? 6 : 7))) : (w < 1 << 11 ? (w < 1 << 9 ? (w < 1 << 8 ? 8 : 9) : (w < 1 << 10 ? 10 : 11)) : (w < 1 << 13 ? (w < 1 << 12 ? 12 : 13) : (w < 1 << 14 ? 14 : 15)))) : (w < 1 << 23 ? (w < 1 << 19 ? (w < 1 << 17 ? (w < 1 << 16 ? 16 : 17) : (w < 1 << 18 ? 18 : 19)) : (w < 1 << 21 ? (w < 1 << 20 ? 20 : 21) : (w < 1 << 22 ? 22 : 23))) : (w < 1 << 27 ? (w < 1 << 25 ? (w < 1 << 24 ? 24 : 25) : (w < 1 << 26 ? 26 : 27)) : (w < 1 << 29 ? (w < 1 << 28 ? 28 : 29) : (w < 1 << 30 ? 30 : 31)))));
+        return
+         (w < 1<<15 ?
+          (w < 1<<7 ?
+           (w < 1<<3 ?
+            (w < 1<<1 ? (w < 1<<0 ? (w<0 ? 32 : 0) : 1) : (w < 1<<2 ? 2 : 3)) :
+            (w < 1<<5 ? (w < 1<<4 ? 4 : 5) : (w < 1<<6 ? 6 : 7))) :
+           (w < 1<<11 ?
+            (w < 1<<9 ? (w < 1<<8 ? 8 : 9) : (w < 1<<10 ? 10 : 11)) :
+            (w < 1<<13 ? (w < 1<<12 ? 12 : 13) : (w < 1<<14 ? 14 : 15)))) :
+          (w < 1<<23 ?
+           (w < 1<<19 ?
+            (w < 1<<17 ? (w < 1<<16 ? 16 : 17) : (w < 1<<18 ? 18 : 19)) :
+            (w < 1<<21 ? (w < 1<<20 ? 20 : 21) : (w < 1<<22 ? 22 : 23))) :
+           (w < 1<<27 ?
+            (w < 1<<25 ? (w < 1<<24 ? 24 : 25) : (w < 1<<26 ? 26 : 27)) :
+            (w < 1<<29 ? (w < 1<<28 ? 28 : 29) : (w < 1<<30 ? 30 : 31)))));   
     }
 
     public static void primitiveLeftShift(int[] a, int len, int n) {
@@ -198,19 +213,20 @@ public class Util {
 	}
 	a[0] <<= n;
     }
-
+ 
+    //Check this
     public static void primitiveRightShift(int[] a, int len, int n) {
 	//remove or stay???
 	if (len == 0 || n == 0) {
 	    return;
 	}
 	int n2 = 32 - n;
-	for (int i = 0, c = a[i]; i < len - 2; ++i) {
+	for (int i = 0, c=a[i]; i < len-1 ; ++i) {
 	    int tmp = c;
 	    c = a[i + 1];
 	    a[i] = (c << n2) | (tmp >>> n);
 	}
-	a[len - 1] >>>= n;
+	a[len-1] >>>= n;
     }
 
     public static int[] leftShift(int[] a, int len, int n) {
@@ -229,7 +245,7 @@ public class Util {
 		int result[] = new int[nInts + len];
 		for (int i = len - 1; i >= 0; --i) {
 		    result[result.length - len + i] = a[i];
-		}//проверить этот случай!!!
+		}
 		primitiveLeftShift(result, result.length, nBits);
 		return result;
 	    } else {
@@ -253,28 +269,32 @@ public class Util {
 	    return null;
 	}
 	int[] result = null;
-
+        //good
 	if (nBits == 0) {
 	    int newLen = len - nInts;
 	    result = new int[newLen];
 	    for (int i = 0; i < newLen; i++) {
 		result[i] = a[len - newLen + i];
 	    }
-	} else {
-	    int i = len - 1;
-	    int highBits = a[i] >>> nBits;
+	} else {		    
+
+	    int newLen=len;
+	    int highBits = a[len-1] >>> nBits;
+	 
 	    if (highBits != 0) {
-		result = new int[len - nInts];
-		result[i--] = highBits;
+		newLen=len-nInts;
+		result = new int[len - nInts];	
 	    } else {
+		newLen=len-nInts-1;
 		result = new int[len - nInts - 1];
 	    }
-
-	    int nBits2 = 32 - nBits;
-	    int j = len - nInts - 1;
-	    while (j >= 0) {
-		result[i--] = (a[j--] << nBits2) | (a[j] >>> nBits);
+	    
+	    for (int i = 0; i < newLen; i++) {
+		result[i] = a[len - newLen + i];
 	    }
+            
+	    primitiveRightShift(result, result.length, nBits);
+	//	result[left] = (a[right] << nBits2) | (a[left] >>> nBits);
 	}
 
 	return result;
