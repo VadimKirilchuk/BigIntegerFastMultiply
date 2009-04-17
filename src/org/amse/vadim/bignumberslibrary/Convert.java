@@ -100,7 +100,7 @@ public class Convert {
 	int srcLen = src.length;
 	for (int i = 0; i < len; i++) {
 	    if (i < srcLen) {
-		result[i] = new Complex(src[i] & 0xFF);
+		result[i] = new Complex(src[i] & 0xFFFF);
 	    } else {
 		result[i] = new Complex();
 	    }
@@ -124,18 +124,30 @@ public class Convert {
 	return Util.cutLeadingZero(result);
     }
     
-    public static byte[] byteFrom2(Complex[] src) {
+    public static short[] shortFrom(Complex[] src) {
 	int len = src.length;
 
-	byte[] result = new byte[len];
+	short[] result = new short[len];
 
 	long carry = 0;
 	
 	for (int i = 0; i < len; i++) {
 	    long buff =  Math.round(src[i].re() + carry);
-	    result[i] = (byte) buff;
-	    carry = (buff >>> 8);
+	    result[i] = (short) buff;
+	    carry = (buff >>> 16);
 	}
-	return Util.cutLeadingZero(result);
+	return result;
+    }
+    
+    public static byte[] byteFrom(short[] src) {
+	int byteArrayLen = src.length * 2;
+	byte[] byteArray = new byte[byteArrayLen];
+
+	for (int i = 0; i < src.length; ++i) {
+	    for (int j = 0; j < 2; ++j) {
+		byteArray[i * 2 + j] = (byte) (src[i] >>> 8 * j);
+	    }
+	}
+	return Util.cutLeadingZero(byteArray);
     }    
 }

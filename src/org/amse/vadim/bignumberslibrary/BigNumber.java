@@ -6,7 +6,7 @@ package org.amse.vadim.bignumberslibrary;
 
 import java.math.BigInteger;
 
-public class BigNumber {
+public class BigNumber implements Comparable<BigNumber>{
 
     // zero-BigNumber have sign=0 and null intArray
     // younger bit is intArray[0]
@@ -201,19 +201,31 @@ public class BigNumber {
     }
     //Not Supported yet!!!
     //Divide like "/" - not like "/ + %"
-    public BigNumber div(BigNumber bnum) throws Exception {
+    public BigNumber div(BigNumber bnum) throws Exception{
+	return new BigNumber(this.divide(bnum).getQ(),this.sign*bnum.sign);
+    }
+    
+    private DivisionData divide(BigNumber bnum) throws Exception {
 	if (bnum.sign == 0) {
 	    throw new Exception("Divide by zero Exception");
 	}
 	if (this.sign == 0) {
-	    return new BigNumber();
+	    return new DivisionData(null, null);
 	}
 	if (bnum.length > this.length) {
-	    return new BigNumber();
+	    return new DivisionData(null, bnum.intArray);
 	}
+	
+	DivisionData resData;
+		
 	if (bnum.length == 1) {
+	    resData = Operations.simpleDiv(this.intArray, this.length, bnum.intArray[0]);
+	    return resData;
 	}
-	return new BigNumber(Operations.div(this.intArray, this.length, bnum.intArray, bnum.length), this.sign * bnum.sign);
+	
+	resData = Operations.div(this,bnum);
+	
+	return resData;
     }
     ///////////////////////End of operations//////////////////////////////////
     public BigNumber shiftLeft(int n) {
@@ -292,7 +304,7 @@ public class BigNumber {
     //returns 1 if this>bnum
     //returns -1 if this<bnum
     //returns 0 if elements are the same
-    public int compare(BigNumber bnum) {
+    public int compareTo(BigNumber bnum) {
 	int cmp = Util.compareArrays(this.intArray, this.length, bnum.intArray, bnum.length);
 	return cmp;
     }
@@ -307,7 +319,15 @@ public class BigNumber {
     }
 
     public int[] getArrayOfBigNumber() {
-	return this.intArray;
+	int[] result = new int[this.length];
+	for (int i = 0; i < result.length; i++) {
+	    result[i]=this.intArray[i];
+	}
+	return result;
+    }
+    
+    public int getLength(){
+	return this.length;
     }
     //////////////////Вспомогательные функции////////////////////////
     private byte[] toByteArray(boolean reverse) {

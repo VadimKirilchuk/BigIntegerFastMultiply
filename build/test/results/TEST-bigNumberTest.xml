@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="Garbage-Collector" name="bigNumberTest" tests="4" time="0.137" timestamp="2009-04-08T14:33:50">
+<testsuite errors="0" failures="0" hostname="Garbage-Collector" name="bigNumberTest" tests="4" time="0.138" timestamp="2009-04-11T08:47:46">
   <properties>
     <property name="default.javac.source" value="1.6" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -22,7 +22,6 @@
     <property name="sun.java2d.noddraw" value="true" />
     <property name="nbplatform.default.harness.dir" value="/usr/share/netbeans/6.1/harness" />
     <property name="debug-args-line" value="-Xdebug" />
-    <property name="netbeans.hash.code" value="unique=NBUBU01f679bcd-031c-4c1f-a721-54e519fe9bb8" />
     <property name="build.sysclasspath" value="ignore" />
     <property name="have.sources" value="true" />
     <property name="includes" value="**" />
@@ -38,7 +37,6 @@
     <property name="run.classpath" value=":build/classes" />
     <property name="libs.PostgreSQLDriver.maven-pom" value="" />
     <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
-    <property name="netbeans.autoupdate.variant" value="" />
     <property name="libs.absolutelayout.javadoc" value="" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="netbeans.buildnumber" value="080905" />
@@ -51,7 +49,6 @@
     <property name="sun.jnu.encoding" value="UTF-8" />
     <property name="java.runtime.name" value="IcedTea6 1.3.1 (6b12-0ubuntu6.4) Runtime Environment" />
     <property name="jdk.home" value="/usr/lib/jvm/java-6-openjdk" />
-    <property name="netbeans.autoupdate.version" value="1.23" />
     <property name="org.openide.TopManager" value="org.netbeans.core.NonGui" />
     <property name="netbeans.dirs" value="/usr/share/netbeans/6.1/nb6.1:/usr/share/netbeans/6.1/ide9:/usr/share/netbeans/6.1/java2:/usr/share/netbeans/6.1/apisupport1:/usr/share/netbeans/6.1/harness:" />
     <property name="java.specification.name" value="Java Platform API Specification" />
@@ -73,7 +70,6 @@
     <property name="libs.jaxb21.maven-pom" value="" />
     <property name="ant.file" value="/media/disk/Common/Netbeans_Projects/svn/build.xml" />
     <property name="libs.junit_4.src" value="" />
-    <property name="netbeans.autoupdate.language" value="ru" />
     <property name="java.io.tmpdir" value="/tmp" />
     <property name="build.test.results.dir" value="build/test/results" />
     <property name="user.language" value="ru" />
@@ -98,7 +94,6 @@
     <property name="platform.active" value="default_platform" />
     <property name="http.nonProxyHosts" value="localhost|127.0.0.1|Garbage-Collector" />
     <property name="libs.junit_4.javadoc" value="" />
-    <property name="netbeans.autoupdate.country" value="RU" />
     <property name="libs.beans-binding.maven-pom" value="" />
     <property name="javadoc.encoding" value="UTF-8" />
     <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
@@ -144,8 +139,8 @@
     <property name="libs.jaxws21.maven-pom" value="" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/i386" />
     <property name="build.dir" value="build" />
-    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
     <property name="libs.swing-app-framework.classpath" value="/home/chibis/.netbeans/6.1/modules/ext/appframework-1.0.3.jar:/home/chibis/.netbeans/6.1/modules/ext/swing-worker-1.1.jar" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
     <property name="javadoc.encoding.used" value="UTF-8" />
     <property name="javadoc.windowtitle" value="" />
@@ -187,12 +182,12 @@
     <property name="do.depend" value="false" />
     <property name="file.separator" value="/" />
     <property name="java.runtime.version" value="1.6.0_0-b12" />
-    <property name="debug.test.classpath" value=":build/classes:/usr/share/netbeans/6.1/java2/modules/ext/junit-3.8.2.jar:build/test/classes" />
     <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/resources.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/rt.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/jsse.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/jce.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/charsets.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/rhino.jar:/usr/lib/jvm/java-6-openjdk/jre/classes" />
+    <property name="debug.test.classpath" value=":build/classes:/usr/share/netbeans/6.1/java2/modules/ext/junit-3.8.2.jar:build/test/classes" />
     <property name="javax.accessibility.assistive_technologies" value="org.GNOME.Accessibility.JavaBridge" />
     <property name="libs.beans-binding.classpath" value="/usr/share/netbeans/6.1/java2/modules/ext/beansbinding-1.2.1.jar" />
-    <property name="main.class" value="org.amse.vadim.bignumberslibrary.Main" />
     <property name="have.tests" value="true" />
+    <property name="main.class" value="org.amse.vadim.bignumberslibrary.Main" />
     <property name="java.util.logging.config.class" value="org.netbeans.core.startup.TopLogging" />
     <property name="libs.javac-api.classpath" value="/home/chibis/.netbeans/6.1/modules/ext/javac-api-nb-7.0-b07.jar" />
     <property name="user.country" value="RU" />
@@ -210,8 +205,8 @@
     <property name="java.specification.version" value="1.6" />
     <property name="sun.arch.data.model" value="32" />
   </properties>
-  <testcase classname="bigNumberTest" name="testByteConstructor" time="0.022" />
-  <testcase classname="bigNumberTest" name="testIntConstructor" time="0.01" />
+  <testcase classname="bigNumberTest" name="testByteConstructor" time="0.033" />
+  <testcase classname="bigNumberTest" name="testIntConstructor" time="0.007" />
   <testcase classname="bigNumberTest" name="testZeroConstructor" time="0.001" />
   <testcase classname="bigNumberTest" name="testBigNumberToByteArray" time="0.005" />
   <system-out><![CDATA[]]></system-out>
