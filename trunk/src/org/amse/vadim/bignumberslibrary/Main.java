@@ -17,15 +17,8 @@ public class Main {
      */
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) throws Exception {
-	//TestBasePerf.run(1024,6, 70,200);
+        //Test.run3();
 	//TestBigNumberPerf.runAll();
-	//Test.mulFFT();
-	//Test.run3();
-	//new View();
-	//TestBigNumberPerf.runAll();
-	//Что делать если при сдвиге мы получили нулевой бигнамбер?
-	//надо ли какие-нибудь эксепшены???
-	//или оставить это(проверку на ноль) на програмиста?
-	TestBigNumberPerf.runAll();
+	Test.testSimpleDiv();
     }
 }

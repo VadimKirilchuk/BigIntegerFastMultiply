@@ -29,8 +29,8 @@ public class TestBigNumberPerf {
 	//mul("MUL.txt", from, points, minimumIterations, dispersionTrust, maxIterations);
 	//mulFFT("FFT.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
 	//mulFFT2("FFT2.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
-	mulFFT1vsFFT2("FFT1vsFFT2.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
-	mulFFT2vsFFT3("FFT1vsFFT3.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
+	//mulFFT1vsFFT2("FFT1vsFFT2.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
+	mulFFT2vsFFT3("FFT2vsFFT3.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
     }
 
     public static void add(String fileName, int fromDim, int mulToEnd,

@@ -176,10 +176,88 @@ public class Operations {
 
 	Complex[] c = Fourier.iterativeFFT(cfft, len, true);
 
-	return Convert.byteFrom2(c);
+	short[] sh = Convert.shortFrom(c);
+	return Convert.byteFrom(sh);
     }    
 
-    public static int[] div(int[] number, int numLen, int[] divider, int dividerLen) {
+    public static DivisionData div(BigNumber number, BigNumber divider) {
+	final long BASE = ((long)(Integer.MAX_VALUE)-(long)(Integer.MIN_VALUE)+1);
+	//Simple cases was already checked in BigNumber class
+	//
+	// Создать временный массив U, равный A
+        // Максимальный размер U на цифру больше A, с учетом
+        // возможного удлинения A при нормализации
+        int[] arrayOfA = number.getArrayOfBigNumber();
+	int[] arrayOfU = new int[arrayOfA.length+1];
+	for (int i = 0; i < arrayOfA.length; i++) {
+	    arrayOfU[i] = arrayOfA[i];    
+	}
+	
+	int n = divider.getLength();
+        int m=arrayOfU.length-n;
+	
+	int uJ; 
+        int vJ; 
+	int i;
+	
+        long temp1;
+	long temp2;
+	long temp3;
+	
+	int scale; // коэффициент нормализации
+
+	long qGuess;
+        int r;     // догадка для частного и соответствующий остаток
+        int borrow;
+        int carry; // переносы
+
+	int[] arrayOfB = divider.getArrayOfBigNumber();
+	scale = (int) (BASE / ( arrayOfB[n-1] + 1 )); //???
+	int[] scaleAr = {scale};
+	
+	if (scale>1){
+	    arrayOfU=simpleMul(arrayOfU, arrayOfU.length, scaleAr, 1);
+	    arrayOfB=simpleMul(arrayOfB, arrayOfB.length, scaleAr, 1);
+	}
+
+	// Главный цикл шагов деления. Каждая итерация дает очередную цифру частного.
+        // vJ - текущий сдвиг B относительно U, используемый при вычитании,
+        // по совместительству - индекс очередной цифры частного.
+        // uJ – индекс текущей цифры U
+	for (vJ = m, uJ=n+vJ; vJ>=0; --vJ, --uJ) {
+	    
+	    qGuess =(int)((arrayOfU[uJ] * BASE + arrayOfU[uJ - 1]) / arrayOfB[n - 1]);
+	    r = (int)((arrayOfU[uJ] * BASE + arrayOfU[uJ - 1]) % arrayOfB[n - 1]);
+            // Пока не будут выполнены условия уменьшать частное.
+	    while (r < BASE) {
+		temp2 = arrayOfB[n - 2] * qGuess;
+		temp1 = r * BASE + arrayOfU[uJ - 2];
+		if ((temp2 > temp1) || (qGuess == BASE)) {
+		    // условия не выполнены, уменьшить qGuess
+		    // и досчитать новый остаток
+		    --qGuess;
+		    r += b[n - 1];
+		} else {
+		    break;
+		}
+	    }
+
+	}
+	
 	return null;
+    }
+
+    public static DivisionData simpleDiv(int[] num, int numLen, int divider) {
+	long temp;
+	int r = 0;
+	int[] q = new int[numLen];
+	
+	for (int i = numLen - 1; i >= 0; --i) { // идти по A, начиная от старшего разряда
+	    temp = r * ((long)(Integer.MAX_VALUE)-(long)(Integer.MIN_VALUE)+1) + (num[i] & Util.LONG_MASK);// r – остаток от предыдущего деления
+	    q[i] = (int)(temp / divider);        // i-я цифра частного
+	    r = (int)(temp - (q[i] * divider));
+	}
+        int[] R = {r};
+	return new DivisionData(q, R);
     }
 }
