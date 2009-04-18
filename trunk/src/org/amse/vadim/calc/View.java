@@ -4,13 +4,15 @@
  */
 package org.amse.vadim.calc;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 /**
- *
  * @author chibis
  */
 public class View extends JFrame {
@@ -24,86 +26,85 @@ public class View extends JFrame {
     private final static String newline = "\n";
 
     public View() {
-	super("CALCULATOR");
-	setSize(this.width, this.heigth);
-	setDefaultCloseOperation(EXIT_ON_CLOSE);
+        super("CALCULATOR");
+        setSize(this.width, this.heigth);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-	this.setLayout(new GridBagLayout());
+        this.setLayout(new GridBagLayout());
 
-	input = new JTextField();
-	input.addActionListener(new Entered());
-	input.addKeyListener(new KeyAction());
+        input = new JTextField();
+        input.addActionListener(new Entered());
+        input.addKeyListener(new KeyAction());
 
-	history = new JTextArea();
-	history.setEditable(false);
-	JScrollPane scrollPane = new JScrollPane(history);
+        history = new JTextArea();
+        history.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(history);
 
-	//Add Components to this panel.
-	GridBagConstraints c = new GridBagConstraints();
-	c.gridwidth = GridBagConstraints.REMAINDER;
+        //Add Components to this panel.
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridwidth = GridBagConstraints.REMAINDER;
 
-	double buffx = c.weightx;
-	double buffy = c.weighty;
+        double buffx = c.weightx;
+        double buffy = c.weighty;
 
 
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        add(scrollPane, c);
 
-	c.fill = GridBagConstraints.BOTH;
-	c.weightx = 1.0;
-	c.weighty = 1.0;
-	add(scrollPane, c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = buffx;
+        c.weighty = buffy;
+        add(input, c);
 
-	c.fill = GridBagConstraints.HORIZONTAL;
-	c.weightx = buffx;
-	c.weighty = buffy;
-	add(input, c);
-
-	setVisible(true);
+        setVisible(true);
     }
 
     public class Entered implements ActionListener {
 
-	public void actionPerformed(ActionEvent e) {
-	    history.append(input.getText() + newline);
-	    hist.add(input.getText());
-	    i = hist.size();
-	    input.setText("");
-	}
+        public void actionPerformed(ActionEvent e) {
+            history.append(input.getText() + newline);
+            hist.add(input.getText());
+            i = hist.size();
+            input.setText("");
+        }
     }
 
     public class KeyAction implements KeyListener {
 
-	public void keyTyped(KeyEvent e) {
-	}
+        public void keyTyped(KeyEvent e) {
+        }
 
-	public void keyPressed(KeyEvent e) {
+        public void keyPressed(KeyEvent e) {
 
-	    if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-		if (hist.size() == 0) {
-		    return;
-		}
-		if (i == 0) {
-		    i = hist.size();
-		}
-		i -= 1;
-		input.setText(hist.get(i));
+            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                if (hist.size() == 0) {
+                    return;
+                }
+                if (i == 0) {
+                    i = hist.size();
+                }
+                i -= 1;
+                input.setText(hist.get(i));
 
-	    }
+            }
 
-	    if (e.getKeyCode() == KeyEvent.VK_UP) {
-		if (hist.size() == 0) {
-		    return;
-		}
-		if (i == hist.size() - 1 || i == hist.size()) {
-		    i = -1;
-		}
-		i += 1;
-		input.setText(hist.get(i));
+            if (e.getKeyCode() == KeyEvent.VK_UP) {
+                if (hist.size() == 0) {
+                    return;
+                }
+                if (i == hist.size() - 1 || i == hist.size()) {
+                    i = -1;
+                }
+                i += 1;
+                input.setText(hist.get(i));
 
-	    }
+            }
 
-	}
+        }
 
-	public void keyReleased(KeyEvent e) {
-	}
+        public void keyReleased(KeyEvent e) {
+        }
     }
 }
