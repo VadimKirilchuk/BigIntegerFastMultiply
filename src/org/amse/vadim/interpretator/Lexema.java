@@ -1,37 +1,31 @@
 package org.amse.vadim.interpretator;
 
 /**
- * ������� ��� ������� ���������.
- * 
- * �����: ��������� ���������.
- * ���:   2008
+ * Lexems to analyze Expression
  */
 public class Lexema {
-  // ��� �������. ���������� ���� ������������ ����� ����� ������,
-  // ������������� ����. ������ ����� ��������� enum.
-  public static class Type {
-    // �������� ����� ������.
-    public static final Type IDENT = new Type();
-    public static final Type NUMBER = new Type();
-    public static final Type OPERATOR = new Type();
-    public static final Type EOTEXT = new Type();
-    public static final Type UNKNOWN = new Type();
+    // Types of Lexems. Imitates enum.
+    public static class Type {
 
-    private Type() {}
-  }
+	public static final Type IDENT = new Type();
+	public static final Type NUMBER = new Type();
+	public static final Type OPERATOR = new Type();
+	public static final Type EOTEXT = new Type();
+	public static final Type UNKNOWN = new Type();
 
-  // ��� �������
-  public final Type type;
+	private Type() {
+	}
+    }    // More common used lexems
+    public static final Lexema LEFTPAR = new OpLexema("(", 0);
+    public static final Lexema RIGHTPAR = new OpLexema(")", 0);
+    public static final Lexema EOTEXT = new Lexema(Type.EOTEXT);
+    public static final Lexema UNKNOWN = new Lexema(Type.EOTEXT);    // Type of THIS lexem.
+    //public field!!!
+    public final Type type;
 
-  // ��������� ����� ������������� �������.
-  public static final Lexema LEFTPAR = new OpLexema("(", 0);
-  public static final Lexema RIGHTPAR = new OpLexema(")", 0);
-  public static final Lexema EOTEXT = new Lexema(Type.EOTEXT);
-  public static final Lexema UNKNOWN = new Lexema(Type.EOTEXT);
-
-  // ������� ������� � ���� �������.
-  public Lexema(Type tp) {
-    type = tp;
-  }
+    // constructor
+    public Lexema(Type type) {
+	this.type = type;
+    }
 }
 

@@ -1,18 +1,14 @@
 package org.amse.vadim.interpretator;
 
 /**
- * ������� - �������������.
- * 
- * �����: ��������� ���������.
- * ���:   2008
+ * Identificator lexema
  */
 public class IdLexema extends Lexema {
-  // ��� �������������
-  public final String name;
-  
-  // ����������� �������
-  public IdLexema(String name) {
-    super(Lexema.Type.IDENT);
-    this.name = name;
-  }
+    // identificator name
+    public final String name;
+    // constructor
+    public IdLexema(String name) {
+	super(Lexema.Type.IDENT);
+	this.name = name;
+    }
 }

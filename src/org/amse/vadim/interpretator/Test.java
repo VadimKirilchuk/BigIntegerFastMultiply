@@ -1,11 +1,5 @@
 package org.amse.vadim.interpretator;
 
-/**
- * �������� ����� ��� �������� ������ �������� ��� �����������.
- *
- * �����: ��������� ���������
- * ����: 6 ������� 2008
- */
 
 import java.util.Set;
 import java.util.HashSet;

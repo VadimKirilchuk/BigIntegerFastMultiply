@@ -4,6 +4,8 @@
  */
 package org.amse.vadim.calc;
 
+import java.text.ParseException;
+import org.amse.vadim.interpretator.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +21,7 @@ public class View extends JFrame {
 
     private int width = 400;
     private int heigth = 300;
-    java.util.ArrayList<String> hist = new ArrayList<String>();
+    ArrayList<String> hist = new ArrayList<String>();
     int i = 0;
     protected JTextField input;
     protected JTextArea history;
@@ -62,12 +64,24 @@ public class View extends JFrame {
     }
 
     public class Entered implements ActionListener {
-
+    
         public void actionPerformed(ActionEvent e) {
-            history.append(input.getText() + newline);
-            hist.add(input.getText());
+            String text = input.getText();
+	    history.append(text + newline);
+            hist.add(text);
             i = hist.size();
             input.setText("");
+	    
+	    		//////////////////interpretator////////////
+	    try {
+		Expression expression = ExprBuilder.generate(text);
+		Integer res = expression.evaluate(null);
+		input.setText(res.toString());
+		
+	    } catch (ParseException ex) {
+		input.setText("PARSE ERROR");
+	    }
+	    
         }
     }
 

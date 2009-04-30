@@ -160,7 +160,7 @@ public class Operations {
 
 	return Convert.byteFrom(c);
     }
-    
+
     public static byte[] mulFFT3(short[] array1, short[] array2) {
 	int len = Fourier.extendLength(array1.length, array2.length);
 	Complex[] a = Convert.complexFrom(array1, len);
@@ -178,57 +178,66 @@ public class Operations {
 
 	short[] sh = Convert.shortFrom(c);
 	return Convert.byteFrom(sh);
-    }    
+    }
 
     public static DivisionData div(BigNumber number, BigNumber divider) {
-	final long BASE = ((long)(Integer.MAX_VALUE)-(long)(Integer.MIN_VALUE)+1);
+	final long BASE = ((long) (Integer.MAX_VALUE) - (long) (Integer.MIN_VALUE) + 1);
+	
 	//Simple cases was already checked in BigNumber class
 	//
 	// Создать временный массив U, равный A
-        // Максимальный размер U на цифру больше A, с учетом
-        // возможного удлинения A при нормализации
-        int[] arrayOfA = number.getArrayOfBigNumber();
-	int[] arrayOfU = new int[arrayOfA.length+1];
+	// Максимальный размер U на цифру больше A, с учетом
+	// возможного удлинения A при нормализации
+	int[] arrayOfA = number.getArrayOfBigNumber();
+	int[] arrayOfU = new int[arrayOfA.length + 1];
+	//maybe System.arraycopy ???
 	for (int i = 0; i < arrayOfA.length; i++) {
-	    arrayOfU[i] = arrayOfA[i];    
+	    arrayOfU[i] = arrayOfA[i];
 	}
-	
+
 	int n = divider.getLength();
-        int m=arrayOfU.length-n;
+	int m = arrayOfU.length - n;
+        int[] Q=new int[m+1];//частное
 	
-	int uJ; 
-        int vJ; 
+	int uJ;
+	int vJ;
 	int i;
-	
-        long temp1;
+
+	long temp1;
 	long temp2;
-	long temp3;
-	
+	long temp;
+
 	int scale; // коэффициент нормализации
 
-	long qGuess;
-        int r;     // догадка для частного и соответствующий остаток
-        int borrow;
-        int carry; // переносы
+	// догадка для частного и соответствующий остаток
+	int qGuess;
+	int r;
+
+	// переносы
+	int borrow;
+	int carry;
 
 	int[] arrayOfB = divider.getArrayOfBigNumber();
-	scale = (int) (BASE / ( arrayOfB[n-1] + 1 )); //???
+	scale = (int) (BASE / (arrayOfB[n - 1] + 1)); //???
+
 	int[] scaleAr = {scale};
-	
-	if (scale>1){
-	    arrayOfU=simpleMul(arrayOfU, arrayOfU.length, scaleAr, 1);
-	    arrayOfB=simpleMul(arrayOfB, arrayOfB.length, scaleAr, 1);
+
+	if (scale > 1) {
+	    arrayOfU = simpleMul(arrayOfU, arrayOfU.length, scaleAr, 1);
+	    arrayOfB = simpleMul(arrayOfB, arrayOfB.length, scaleAr, 1);
 	}
 
 	// Главный цикл шагов деления. Каждая итерация дает очередную цифру частного.
-        // vJ - текущий сдвиг B относительно U, используемый при вычитании,
-        // по совместительству - индекс очередной цифры частного.
-        // uJ – индекс текущей цифры U
+	// vJ - текущий сдвиг B относительно U, используемый при вычитании,
+	// по совместительству - индекс очередной цифры частного.
+	// uJ – индекс текущей цифры U
+	int uLen=arrayOfU.length;
+	
 	for (vJ = m, uJ=n+vJ; vJ>=0; --vJ, --uJ) {
-	    
-	    qGuess =(int)((arrayOfU[uJ] * BASE + arrayOfU[uJ - 1]) / arrayOfB[n - 1]);
-	    r = (int)((arrayOfU[uJ] * BASE + arrayOfU[uJ - 1]) % arrayOfB[n - 1]);
-            // Пока не будут выполнены условия уменьшать частное.
+
+	    qGuess = (int) ((arrayOfU[uJ] * BASE + arrayOfU[uJ - 1]) / arrayOfB[n - 1]);
+	    r = (int) ((arrayOfU[uJ] * BASE + arrayOfU[uJ - 1]) % arrayOfB[n - 1]);
+	    // Пока не будут выполнены условия уменьшать частное.
 	    while (r < BASE) {
 		temp2 = arrayOfB[n - 2] * qGuess;
 		temp1 = r * BASE + arrayOfU[uJ - 2];
@@ -236,28 +245,106 @@ public class Operations {
 		    // условия не выполнены, уменьшить qGuess
 		    // и досчитать новый остаток
 		    --qGuess;
-		    r += b[n - 1];
+		    r += arrayOfB[n - 1];
 		} else {
 		    break;
 		}
 	    }
-
+	    // Теперь qGuess - правильное частное или на единицу больше q
+	    // Вычесть делитель B, умноженный на qGuess из делимого U,
+	    // начиная с позиции vJ+i
+	    carry = 0;
+	    borrow = 0;
+	    int uShift = vJ;
+	    
+	    // цикл по цифрам B
+            for (i=0; i < n; i++) {
+		// получить в temp цифру произведения B*qGuess
+		temp1 = arrayOfB[i] * qGuess + carry;
+		carry = (int)(temp1 / BASE);
+		temp1 -= carry * BASE;
+		// Сразу же вычесть из U
+		temp2 = arrayOfU[uShift+i] - temp1 + borrow;
+		if (temp2 < 0) {
+		    arrayOfU[uShift+i] =(int)(temp2 + BASE); //может работать неправильно!!!
+		    borrow = -1;
+		} else {
+		    arrayOfU[uShift+i] =(int) temp2;//может работать неправильно!!!
+		    borrow = 0;
+		}
+	    }
+	    // возможно, умноженое на qGuess число B удлинилось.
+	    // Если это так, то после умножения остался
+	    // неиспользованный перенос carry. Вычесть и его тоже.
+	    temp2 = arrayOfU[uShift+i] - carry + borrow;
+	    if (temp2 < 0) {
+		arrayOfU[uShift+i] = (int) (temp2 + BASE); //может работать неправильно
+		borrow = -1;
+	    } else {
+		arrayOfU[uShift+i] = (int) temp2;//может работать неправильно
+		borrow = 0;
+	    }
+	    // Прошло ли вычитание нормально ?
+	    if (borrow == 0) {          // Да, частное угадано правильно
+		Q[vJ] = qGuess;
+	    } else {      // Нет, последний перенос при вычитании borrow = -1,
+		// значит, qGuess на единицу больше истинного частного
+		Q[vJ] = qGuess - 1;
+		// добавить одно, вычтенное сверх необходимого B к U
+		carry = 0;
+		for (i = 0; i < n; i++) {
+		    temp = arrayOfU[uShift+i] + arrayOfB[i] + carry;
+		    if (temp >= BASE) {
+			arrayOfU[uShift+i] = (int) (temp - BASE);//может работать неправильно
+			carry = 1;
+		    } else {
+			arrayOfU[uShift+i] = (int) temp;//может работать неправильно
+			carry = 0;
+		    }
+		}
+		arrayOfU[uShift+i] = (int) (arrayOfU[uShift + i] + carry - BASE);//может работать неправильно
+	    }
+	    // Обновим размер U, который после вычитания мог уменьшиться	    
+	    i = uLen - 1;
+	    while ((i > 0) && (arrayOfU[i] == 0)) {
+		i--;
+	    }
+	    uLen = i + 1;
 	}
-	
-	return null;
+	// Деление завершено !
+	// Размер частного равен m+1, но, возможно, первая цифра - ноль.
+	while ((m > 0) && (Q[m] == 0)) {
+	    m--;
+	}
+
+	int[] R;
+	// Если происходило домножение на нормализующий множитель –
+	// разделить на него. То, что осталось от U – остаток.
+	if (scale > 1) {
+	    int junk;          // почему-то остаток junk всегда будет равен нулю...
+	    DivisionData dd= simpleDiv(arrayOfB, arrayOfB.length,scale);
+	    arrayOfB=dd.getQ();
+	    junk=dd.getR()[0]; //возможно я тут не правильно понял
+	    dd=simpleDiv(arrayOfU, uLen , scale);
+	    R=dd.getQ();
+	    junk=dd.getR()[0];	    
+	} else {
+	    R = arrayOfU;
+	}
+	return new DivisionData(Q, R);
     }
 
     public static DivisionData simpleDiv(int[] num, int numLen, int divider) {
 	long temp;
 	int r = 0;
 	int[] q = new int[numLen];
-	
+
 	for (int i = numLen - 1; i >= 0; --i) { // идти по A, начиная от старшего разряда
-	    temp = r * ((long)(Integer.MAX_VALUE)-(long)(Integer.MIN_VALUE)+1) + (num[i] & Util.LONG_MASK);// r – остаток от предыдущего деления
-	    q[i] = (int)(temp / divider);        // i-я цифра частного
-	    r = (int)(temp - (q[i] * divider));
+	    temp = r * ((long) (Integer.MAX_VALUE) - (long) (Integer.MIN_VALUE) + 1) + (num[i] & Util.LONG_MASK);// r – остаток от предыдущего деления
+	    q[i] = (int) (temp / divider);        // i-я цифра частного
+	    r = (int) (temp - (q[i] * divider));
 	}
-        int[] R = {r};
+	int[] R = {r};
 	return new DivisionData(q, R);
     }
 }

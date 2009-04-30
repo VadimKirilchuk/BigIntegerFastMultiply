@@ -223,9 +223,9 @@ public class BigNumber implements Comparable<BigNumber>{
 	    return resData;
 	}
 	
-	resData = Operations.div(this,bnum);
+	//resData = Operations.div(this,bnum);
 	
-	return resData;
+	return null;
     }
     ///////////////////////End of operations//////////////////////////////////
     public BigNumber shiftLeft(int n) {
