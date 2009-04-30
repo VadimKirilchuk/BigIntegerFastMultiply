@@ -1,21 +1,20 @@
 package org.amse.vadim.interpretator;
 
 /**
- * ������� - ���� ��������.
- * 
- * �����: ��������� ���������.
- * ���:   2008
+ * Operation Lexema
+ * It`s a sign! (+ - *)
+ * or brackets.(look more often used lexems in Lexema)
  */
 public class OpLexema extends Lexema {
-  // ���� ��������.
-  public final String operator;
-  // ��������� ��������
-  public final int prio;
+    // operation sign
+    public final String operator;
+    // priority of operation
+    public final int prio;
 
-  // �����������
-  public OpLexema(String op, int prio) {
-    super(Lexema.Type.OPERATOR);
-    operator = op;
-    this.prio = prio;
-  }
+    // constructor
+    public OpLexema(String operator, int priority) {
+	super(Lexema.Type.OPERATOR);
+	this.operator = operator;
+	this.prio = priority;
+    }
 }

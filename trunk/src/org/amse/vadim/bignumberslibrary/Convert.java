@@ -13,6 +13,8 @@ public class Convert {
     private Convert() {
     }
     //Convert from byteArray to intArray without leading zeroes.
+    //not for complement code.
+    //uses in BigNumber Constructor from bytes and Fourier with byte BASE
     public static int[] intFrom(byte[] src) {
 	int keep;
 
@@ -43,7 +45,10 @@ public class Convert {
 	}
 	return result;
     }
-
+    
+    //making byte array from BigNumber intArray. Not to forget
+    //that bigNumberArray may have more elements, that his size!!!
+    //so we need the second parametr - length(how elements are real)
     public static byte[] byteFrom(int[] src, int length) {
 	int byteArrayLen = length * 4;
 	byte[] byteArray = new byte[byteArrayLen];
@@ -56,6 +61,9 @@ public class Convert {
 	return Util.cutLeadingZero(byteArray);
     }
     
+    //We need this method to calculate Fourier with Short BASE
+    //Not to forget that BigNumber may have more elements
+    //than his size. So we need second parametr - length.
     public static short[] shortFrom(int[] src, int length) {
 	int shortArrayLen = length * 2;
 	short[] shortArray = new short[shortArrayLen];
@@ -68,6 +76,9 @@ public class Convert {
 	return shortArray;
     }    
 
+    //This method is needed for FFT(Simple recursive with byte BASE)
+    //he is not filling complex arrays by Zeroes!!!
+    //so src must be 2^n length!!!
     public static Complex[] complexFrom(byte[] src) {
 	int len = src.length;
 	Complex[] result = new Complex[len];
@@ -77,6 +88,8 @@ public class Convert {
 	return result;
     }
 
+    //This method is needed for FFT2(iterative with byte BASE)
+    //it`s fill complex arrays by zeroes to extend Length.
     public static Complex[] complexFrom(byte[] src, int length) {
 	int len = length;
 	Complex[] result = new Complex[len];
@@ -93,6 +106,8 @@ public class Convert {
 	return result;
     }
 
+    //This method is needed for FFT2(iterative with short BASE)
+    //it`s fill complex arrays by zeroes to extend Length.  
     public static Complex[] complexFrom(short[] src, int length) {
 	int len = length;
 	Complex[] result = new Complex[len];
@@ -109,6 +124,8 @@ public class Convert {
 	return result;
     }    
     
+    //This method is to make byte array from complex array after 
+    //FFT.
     public static byte[] byteFrom(Complex[] src) {
 	int len = src.length;
 
@@ -124,6 +141,8 @@ public class Convert {
 	return Util.cutLeadingZero(result);
     }
     
+    //This method is to make short array from complex array after 
+    //FFT.
     public static short[] shortFrom(Complex[] src) {
 	int len = src.length;
 
@@ -139,6 +158,8 @@ public class Convert {
 	return result;
     }
     
+    //This method is to make byte Array fom short array
+    //cause we need bytes for BigNumber constructor
     public static byte[] byteFrom(short[] src) {
 	int byteArrayLen = src.length * 2;
 	byte[] byteArray = new byte[byteArrayLen];

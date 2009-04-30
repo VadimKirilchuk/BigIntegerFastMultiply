@@ -6,6 +6,7 @@ package org.amse.vadim.testBasePerf;
 
 import org.amse.vadim.bignumberslibrary.Dispersion;
 import org.amse.vadim.bignumberslibrary.Util;
+import java.util.Random;
 
 /**
  * @author chibis
@@ -13,7 +14,7 @@ import org.amse.vadim.bignumberslibrary.Util;
 public class TestBasePerf {
 
     public static void run(int startDim, int mulToEnd, int trustPercent, int maximumIterations) {
-        java.util.Random rnd = new java.util.Random();
+        Random rnd = new Random();
 
         byte[] byteArray1;
         byte[] byteArray2;

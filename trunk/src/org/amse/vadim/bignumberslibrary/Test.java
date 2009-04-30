@@ -47,6 +47,36 @@ public class Test {
 	}
     }
    
+        public static void testDiv() throws Exception{
+	Random rnd = new Random();
+	
+	byte[] byteArray1 = new byte[6];
+	byte[] byteArray2 = new byte[2];
+
+	for (int i = 0; i < byteArray1.length; i++) {
+	    byteArray1[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
+	}
+
+	for (int i = 0; i < byteArray2.length; i++) {
+	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
+	}
+	
+	BigNumber bn1 = new BigNumber(byteArray1);
+	BigNumber bn2 = new BigNumber(byteArray2);
+	BigInteger bi1 = new BigInteger(byteArray1);
+	BigInteger bi2 = new BigInteger(byteArray2);
+	
+	byte[] result1 = bi1.divide(bi2).toByteArray();
+	for (int i = 0; i < result1.length; i++) {
+	    System.out.print(result1[i]+"_");
+	}
+	System.out.println();
+	byte[] result2 = bn1.div(bn2).toByteArray();
+	for (int i = 0; i < result2.length; i++) {
+	    System.out.print(result2[i]+"_");
+	}
+    }
+    
     public static void run2() {
 	///////determination
 	Random rnd = new Random();

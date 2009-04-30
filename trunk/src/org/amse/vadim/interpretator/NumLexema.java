@@ -1,18 +1,16 @@
 package org.amse.vadim.interpretator;
 
 /**
- * ������� - ����� �����.
- * 
- * �����: ��������� ���������.
- * ���:   2008
+ * Number lexema.
+ * An int value.
  */
 public class NumLexema extends Lexema {
-  // �������� �����.
-  public final int value;
+    // the meaning of number
+    public final int value;
 
-  // �����������
-  public NumLexema(int v) {
-    super(Lexema.Type.NUMBER);
-    value = v;
-  }
+    // constructor
+    public NumLexema(int value) {
+	super(Lexema.Type.NUMBER);
+	this.value = value;
+    }
 }

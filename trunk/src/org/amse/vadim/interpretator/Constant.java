@@ -1,57 +1,73 @@
 package org.amse.vadim.interpretator;
 
 /**
- * В этом файле описывается класс для представления константы,
- * являющейся частным случаем выражения. Считаем, что возможны только
- * целочисленные константы.
- *
- * Автор: Александр Кубенский
- * Дата: 6 октября 2008
+ * Class for representation of constant
+ * which implements Expression.
+ * Only integer constants are supported
  */
-
 import java.util.Iterator;
 import java.util.Map;
 
 public class Constant implements Expression, Comparable<Constant> {
-  private final int value;
 
-  // Две часто встречающиеся константы.
-  public final static Constant ZERO = new Constant(0);
-  public final static Constant UNIT = new Constant(1);
+    private final int value;    // More often used constants
+    public final static Constant ZERO = new Constant(0);
+    public final static Constant ONE = new Constant(1);
 
-  // Конструктор
-  public Constant(int value) { this.value = value; }
-  // Функция доступа к значению
-  public int getValue() { return value; }
-
-  // Реализация итератора константы - пустой итератор
-  private static class ConstIterator implements Iterator<Variable> {
-    public boolean hasNext() { return false; }
-    public Variable next() { return null; }
-    public void remove() {
-      throw new UnsupportedOperationException();
+    // Constructor of constant
+    public Constant(int value) {
+	this.value = value;
     }
-  }
+    // function to get value of constant
+    public int getValue() {
+	return value;
+    }
 
-  // Переопределение методов класса Object
-  public boolean equals(Object o) {
-    return (o instanceof Constant) && value == ((Constant)o).value;
-  }
-  public int hashCode() { return (value + 29) * 37; }
-  public String toString() { return ((Integer)value).toString(); }
+    // Iterator of constant is empty iterator
+    private static class ConstIterator implements Iterator<Variable> {
 
-  // Реализация метода интерфейса Comparable
-  public int compareTo(Constant c) { return value - c.value; }
+	public boolean hasNext() {
+	    return false;
+	}
 
-  // Реализация метода интерфейса Iterable
-  public Iterator<Variable> iterator() { return new ConstIterator(); }
+	public Variable next() {
+	    return null;
+	}
 
-  // Реализация методов интерфейса Expression
-  public Expression dash(Variable v) {
-    return ZERO;
-  }
+	public void remove() {
+	    throw new UnsupportedOperationException();
+	}
+    }
 
-  public int evaluate(Map<Variable, Constant> context) {
-    return value;
-  }
+    // Object class methods
+    public boolean equals(Object o) {
+	return (o instanceof Constant) && (value == ((Constant) o).value);
+    }
+
+    public int hashCode() {
+	return (value + 29) * 37;
+    }
+
+    public String toString() {
+	return ((Integer) value).toString();
+    }
+
+    // Comparable interface methods
+    public int compareTo(Constant c) {
+	return value - c.value;
+    }
+
+    //  Iterable interface methods
+    public Iterator<Variable> iterator() {
+	return new ConstIterator();
+    }
+
+    //  Expression interface methods
+    public Expression dash(Variable v) {
+	return ZERO;
+    }
+
+    public int evaluate(Map<Variable, Constant> context) {
+	return value;
+    }
 }

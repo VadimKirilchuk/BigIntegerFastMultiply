@@ -5,101 +5,103 @@ import java.io.StringReader;
 import java.io.IOException;
 
 /**
- * ����������� ���������� ��� ������� ���������.
- * 
- * �����: ��������� ���������.
- * ���:   2008
+ * Lexical analizator.
  */
 public class LexAnalyzer {
-  // ������� ����� ��������.
-  private Reader is;
-  // ��������� ������.
-  private char nextChar;
+    // input stream of symbols
+    private Reader is;
+    // next symbol
+    private char nextChar;
 
-  // ����������� �� ���� ��� ������������� ������ ��������.
-  public LexAnalyzer(Reader is) {
-    this.is = is;
-    getNext();
-  }
-
-  // ����������� �� ������ ��������.
-  public LexAnalyzer(String s) {
-    this(new StringReader(s));
-  }
-
-  // ������ ���������� ������� �� ������
-  private void getNext() {
-    try {
-      int nextChar = is.read();
-      if (nextChar == -1) {
-        // ����� �������� ������.
-        this.nextChar = 0;
-      } else {
-        this.nextChar = (char)nextChar;
-      }
-    } catch (IOException x) {
-      // ������ ��� ������ �� ������.
-      this.nextChar = 0;
+    // constructor from stream.
+    public LexAnalyzer(Reader is) {
+	this.is = is;
+	getNext();
     }
-  }
 
-  // ���������� ������ �������.
-  private void skip() {
-    while (Character.isWhitespace(nextChar)) getNext();
-  }
-
-  /**
-   * ������ � ������ ��������� �������.
-   * ������� ������������, ��� ������ ������ ������� ���
-   * ������ �� �������� ������.
-   * ������� ������������ �� ������, ��������� ���������
-   * ������� � ���������������, �������� ������ �������,
-   * �� ����������� � ������.
-   * 
-   * @return ��������� ������� �� �������� ������ ��� EOTEXT,
-   *     ���� ��������� ������� �����������. 
-   */
-  public Lexema nextLex() {
-    // ������� �������� ������.
-    skip();
-    switch (nextChar) {
-      case 0:  // ����� ������ ��� ������ ������.
-        return Lexema.EOTEXT;
-      case '(':
-        getNext();
-        return Lexema.LEFTPAR;
-      case ')':
-        getNext();
-        return Lexema.RIGHTPAR;
-      case '+':
-      case '-':
-        Lexema l = new OpLexema(Character.toString(nextChar), 1);
-        getNext();
-        return l;
-      case '*':
-        getNext();
-        return new OpLexema(Character.toString('*'), 2);
-      default:
-        if (Character.isDigit(nextChar)) {
-          // ������ �����
-          int n = 0;
-          do {
-            n *= 10;
-            n += (nextChar - '0');
-            getNext();
-          } while (Character.isDigit(nextChar));
-          return new NumLexema(n);
-        } else if (Character.isLetter(nextChar)) {
-          // ������ ��������������
-          StringBuffer bs = new StringBuffer();
-          do {
-            bs.append(Character.toString(nextChar));
-            getNext();
-          } while (Character.isLetterOrDigit(nextChar));
-          return new IdLexema(bs.toString());
-        } else {
-          return Lexema.UNKNOWN;
-        }
+    // constructor from String
+    public LexAnalyzer(String s) {
+	this(new StringReader(s));
     }
-  }
+
+    // reading next symbol
+    private void getNext() {
+	try {
+	    int nextSymbol = is.read();
+	    if (nextSymbol == -1) {
+		// stream is ended.
+		//char 0 ???
+		this.nextChar = 0;
+	    } else {
+		this.nextChar = (char) nextSymbol;
+	    }
+	} catch (IOException e) {
+	    // Error while trying to read from stream
+	    this.nextChar = 0;
+	}
+    }
+
+    // skipping whitespaces
+    private void skip() {
+	while (Character.isWhitespace(nextChar)) {
+	    getNext();
+	}
+    }
+
+    /**
+     * Reading and returning of next lexema.
+     * Functions is think that first symbol of
+     * lexema had been already readed!
+     * 
+     * Functions stops when EOTEXT reached or 
+     * other lexema is readed;
+     * 
+     * return lexema or EOTEXT,
+     */
+    public Lexema nextLex() {
+	// finding first non zero symbol
+	skip();
+	switch (nextChar) {
+	    case 0:  // end of stream or error while reading from the stream
+		return Lexema.EOTEXT;
+	    case '(':
+		getNext();
+		return Lexema.LEFTPAR;//priority is zero
+	    case ')':
+		getNext();
+		return Lexema.RIGHTPAR;
+	    case '+':
+	    case '-':
+		Lexema l = new OpLexema(Character.toString(nextChar), 1);
+		getNext();
+		return l;
+	    case '*':
+		getNext();
+		return new OpLexema(Character.toString('*'), 2);
+	    default:
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if (Character.isDigit(nextChar)) {
+		    // analyzing the number           
+		    int n = 0;
+		    do {//while character is digit
+			n *= 10;
+			n += (nextChar - '0');//getting digit
+			getNext();//changing nextChar
+		    } while (Character.isDigit(nextChar));
+		    //return numberLexema
+		    return new NumLexema(n);
+		} else if (Character.isLetter(nextChar)) {
+		    // analyzing identificator
+		    StringBuffer sb = new StringBuffer();
+		    do {//while character is leter or digit e.g. value124
+			sb.append(Character.toString(nextChar));
+			getNext();//changing nextChar
+		    } while (Character.isLetterOrDigit(nextChar));
+		    //return new identificatorLexema
+		    return new IdLexema(sb.toString());
+		} else {
+		    return Lexema.UNKNOWN;
+		}
+	}
+    }
 }

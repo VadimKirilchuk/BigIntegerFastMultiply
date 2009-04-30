@@ -5,14 +5,15 @@
 package org.amse.vadim.bignumberslibrary;
 
 import java.math.BigInteger;
-
+import java.util.Random;
+import java.io.*;
 /**
  *
  * @author chibis
  */
 public class TestBigNumberPerf {
 
-    private static java.util.Random rnd = new java.util.Random();
+
 
     private TestBigNumberPerf() {
     }
@@ -33,49 +34,36 @@ public class TestBigNumberPerf {
 	mulFFT2vsFFT3("FFT2vsFFT3.txt", from, points / 2, minimumIterations / 2, dispersionTrust, maxIterations / 2);
     }
 
+    private static Random rnd = new Random();
+    
+    private static BigNumber bn1;
+    private static BigNumber bn2;
+
+    private static BigInteger b1;
+    private static BigInteger b2;
+    
+    private static Dispersion disp;
+    private static int delta;
+    private static long t1;
+    private static long t2;
+    
     public static void add(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
-	java.io.File file = new java.io.File(fileName);
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-	java.io.PrintWriter out = new java.io.PrintWriter(file);
+	PrintWriter out = createFile(fileName);
 
 	out.print("Bytes ");
 	out.print("BigNum.add ");
 	out.print("BigInt.add ");
 	out.println();
 
-	byte[] byteArray1;
-	byte[] byteArray2;
-
 	for (int i = fromDim; i < fromDim * Math.pow(2, mulToEnd); i *= 2) {
 
-	    byteArray1 = new byte[i];
-	    byteArray2 = new byte[i];
-
 	    out.print(i);
-	    out.print(" ");
-
-	    // Инициализация массива	
-	    for (int j = 0; j < i; ++j) {
-		byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-		byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-	    }
-
-	    BigNumber bn1 = new BigNumber(byteArray1);
-	    BigNumber bn2 = new BigNumber(byteArray2);
-
-	    BigInteger b1 = new BigInteger(byteArray1);
-	    BigInteger b2 = new BigInteger(byteArray2);
-
-	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
-	    int delta = 1;
-
-	    long t1;
-	    long t2;
-
+	    out.print(" ");	    
+	    
+	    init( i,minDispersion, dispersionTrust, maxIterations);
+	
 	    while (!disp.canTrust(delta)) {
 		t1 = System.currentTimeMillis();
 		bn1.add(bn2);
@@ -104,45 +92,19 @@ public class TestBigNumberPerf {
     public static void mul(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
-	java.io.File file = new java.io.File(fileName);
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-	java.io.PrintWriter out = new java.io.PrintWriter(file);
+	PrintWriter out = createFile(fileName);
 
 	out.print("Bytes ");
 	out.print("BigNum.mul ");
 	out.print("BigInt.mul ");
 	out.println();
 
-	byte[] byteArray1;
-	byte[] byteArray2;
-
 	for (int i = fromDim; i < fromDim * Math.pow(2, mulToEnd); i *= 2) {
-
-	    byteArray1 = new byte[i];
-	    byteArray2 = new byte[i];
 
 	    out.print(i);
 	    out.print(" ");
 
-	    // Инициализация массива	
-	    for (int j = 0; j < i; ++j) {
-		byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-		byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-	    }
-
-	    BigNumber bn1 = new BigNumber(byteArray1);
-	    BigNumber bn2 = new BigNumber(byteArray2);
-
-	    BigInteger b1 = new BigInteger(byteArray1);
-	    BigInteger b2 = new BigInteger(byteArray2);
-
-	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
-	    int delta = 1;
-
-	    long t1;
-	    long t2;
+	    init(i, minDispersion, dispersionTrust, maxIterations);
 
 	    while (!disp.canTrust(delta)) {
 		t1 = System.currentTimeMillis();
@@ -172,45 +134,19 @@ public class TestBigNumberPerf {
     public static void mulFFT(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
-	java.io.File file = new java.io.File(fileName);
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-	java.io.PrintWriter out = new java.io.PrintWriter(file);
+	PrintWriter out = createFile(fileName);
 
 	out.print("Bytes ");
 	out.print("BigNum.FFT ");
 	out.print("BigInt.mul ");
 	out.println();
 
-	byte[] byteArray1;
-	byte[] byteArray2;
-
 	for (int i = fromDim; i < fromDim * Math.pow(2, mulToEnd); i *= 2) {
-
-	    byteArray1 = new byte[i];
-	    byteArray2 = new byte[i];
 
 	    out.print(i);
 	    out.print(" ");
 
-	    // Инициализация массива	
-	    for (int j = 0; j < i; ++j) {
-		byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-		byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-	    }
-
-	    BigNumber bn1 = new BigNumber(byteArray1);
-	    BigNumber bn2 = new BigNumber(byteArray2);
-
-	    BigInteger b1 = new BigInteger(byteArray1);
-	    BigInteger b2 = new BigInteger(byteArray2);
-
-	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
-	    int delta = 1;
-
-	    long t1;
-	    long t2;
+	    init(i, minDispersion, dispersionTrust, maxIterations);
 
 	    while (!disp.canTrust(delta)) {
 		t1 = System.currentTimeMillis();
@@ -240,45 +176,19 @@ public class TestBigNumberPerf {
     public static void mulFFT2(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
-	java.io.File file = new java.io.File(fileName);
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-	java.io.PrintWriter out = new java.io.PrintWriter(file);
+	PrintWriter out = createFile(fileName);
 
 	out.print("Bytes ");
 	out.print("BigNum.FFT2 ");
 	out.print("BigInt.mul ");
 	out.println();
 
-	byte[] byteArray1;
-	byte[] byteArray2;
-
 	for (int i = fromDim; i < fromDim * Math.pow(2, mulToEnd); i *= 2) {
-
-	    byteArray1 = new byte[i];
-	    byteArray2 = new byte[i];
 
 	    out.print(i);
 	    out.print(" ");
 
-	    // Инициализация массива	
-	    for (int j = 0; j < i; ++j) {
-		byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-		byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-	    }
-
-	    BigNumber bn1 = new BigNumber(byteArray1);
-	    BigNumber bn2 = new BigNumber(byteArray2);
-
-	    BigInteger b1 = new BigInteger(byteArray1);
-	    BigInteger b2 = new BigInteger(byteArray2);
-
-	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
-	    int delta = 1;
-
-	    long t1;
-	    long t2;
+	    init(i, minDispersion, dispersionTrust, maxIterations);
 
 	    while (!disp.canTrust(delta)) {
 		t1 = System.currentTimeMillis();
@@ -308,11 +218,7 @@ public class TestBigNumberPerf {
     public static void mulFFT1vsFFT2(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
-	java.io.File file = new java.io.File(fileName);
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-	java.io.PrintWriter out = new java.io.PrintWriter(file);
+	PrintWriter out = createFile(fileName);
 
 	out.print("Bytes ");
 	out.print("recursive ");
@@ -342,11 +248,11 @@ public class TestBigNumberPerf {
 	    BigNumber bn3 = new BigNumber(byteArray1);
 	    BigNumber bn4 = new BigNumber(byteArray2);
 
-	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
-	    int delta = 1;
+	    disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
+	    delta = 1;
 
-	    long t1;
-	    long t2;
+	    t1=0;
+	    t2=0;
 
 	    while (!disp.canTrust(delta)) {
 		t1 = System.currentTimeMillis();
@@ -376,11 +282,7 @@ public class TestBigNumberPerf {
     public static void mulFFT2vsFFT3(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
-	java.io.File file = new java.io.File(fileName);
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-	java.io.PrintWriter out = new java.io.PrintWriter(file);
+	PrintWriter out = createFile(fileName);
 
 	out.print("Bytes ");
 	out.print("iterative ");
@@ -410,11 +312,11 @@ public class TestBigNumberPerf {
 	    BigNumber bn3 = new BigNumber(byteArray1);
 	    BigNumber bn4 = new BigNumber(byteArray2);
 
-	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
-	    int delta = 1;
+	    disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
+	    delta = 1;
 
-	    long t1;
-	    long t2;
+	    t1=0;
+	    t2=0;
 
 	    while (!disp.canTrust(delta)) {
 		t1 = System.currentTimeMillis();
@@ -444,45 +346,19 @@ public class TestBigNumberPerf {
     public static void sub(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
-	java.io.File file = new java.io.File(fileName);
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-	java.io.PrintWriter out = new java.io.PrintWriter(file);
+	PrintWriter out = createFile(fileName);;
 
 	out.print("Bytes ");
 	out.print("BigNum.add ");
 	out.print("BigInt.add ");
 	out.println();
 
-	byte[] byteArray1;
-	byte[] byteArray2;
-
 	for (int i = fromDim; i < fromDim * Math.pow(2, mulToEnd); i *= 2) {
-
-	    byteArray1 = new byte[i];
-	    byteArray2 = new byte[i];
 
 	    out.print(i);
 	    out.print(" ");
 
-	    // Инициализация массива	
-	    for (int j = 0; j < i; ++j) {
-		byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-		byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-	    }
-
-	    BigNumber bn1 = new BigNumber(byteArray1);
-	    BigNumber bn2 = new BigNumber(byteArray2);
-
-	    BigInteger b1 = new BigInteger(byteArray1);
-	    BigInteger b2 = new BigInteger(byteArray2);
-
-	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
-	    int delta = 1;
-
-	    long t1;
-	    long t2;
+	    init(i, minDispersion, dispersionTrust, maxIterations);
 
 	    while (!disp.canTrust(delta)) {
 		t1 = System.currentTimeMillis();
@@ -511,45 +387,19 @@ public class TestBigNumberPerf {
     public static void div(String fileName, int fromDim, int mulToEnd,
 	    int minDispersion, int dispersionTrust, int maxIterations) throws Exception {
 
-	java.io.File file = new java.io.File(fileName);
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-	java.io.PrintWriter out = new java.io.PrintWriter(file);
+	PrintWriter out = createFile(fileName);
 
 	out.print("Bytes ");
-	out.print("BigNum.add ");
-	out.print("BigInt.add ");
+	out.print("BigNum.div ");
+	out.print("BigInt.div ");
 	out.println();
 
-	byte[] byteArray1;
-	byte[] byteArray2;
-
 	for (int i = fromDim; i < fromDim * Math.pow(2, mulToEnd); i *= 2) {
-
-	    byteArray1 = new byte[i];
-	    byteArray2 = new byte[i];
 
 	    out.print(i);
 	    out.print(" ");
 
-	    // Инициализация массива	
-	    for (int j = 0; j < i; ++j) {
-		byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-		byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-	    }
-
-	    BigNumber bn1 = new BigNumber(byteArray1);
-	    BigNumber bn2 = new BigNumber(byteArray2);
-
-	    BigInteger b1 = new BigInteger(byteArray1);
-	    BigInteger b2 = new BigInteger(byteArray2);
-
-	    Dispersion disp = new Dispersion(minDispersion, dispersionTrust, maxIterations);
-	    int delta = 1;
-
-	    long t1;
-	    long t2;
+	    init(i, minDispersion, dispersionTrust, maxIterations);
 
 	    while (!disp.canTrust(delta)) {
 		t1 = System.currentTimeMillis();
@@ -573,5 +423,36 @@ public class TestBigNumberPerf {
 	    out.println();
 	}
 	out.close();
+    }
+    
+    public static PrintWriter createFile(String fileName) throws IOException{
+	File file = new File(fileName);
+	if (!file.exists()) {
+	    file.createNewFile();
+	}
+	return new PrintWriter(file);
+    }
+    
+    public static void init(int i, int minDispersion, int dispersionTrust, int maxIterations){
+
+	byte[] byteArray1 = new byte[i];
+	byte[] byteArray2 = new byte[i];
+
+	// Инициализация массива	
+	for (int j = 0; j < i; ++j) {
+	    byteArray1[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
+	    byteArray2[j] = (byte) rnd.nextInt(Byte.MAX_VALUE);
+	}
+	
+	bn1 = new BigNumber(byteArray1);
+	bn2 = new BigNumber(byteArray2);
+	b1 = new BigInteger(byteArray1);
+	b2 = new BigInteger(byteArray2);
+
+	disp=new Dispersion(minDispersion, dispersionTrust, maxIterations);
+	delta=1;
+	t1=0;
+	t2=0;
+	
     }
 }
