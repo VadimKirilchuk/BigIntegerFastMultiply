@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="Garbage-Collector" name="bigNumberTest" tests="4" time="0.138" timestamp="2009-04-11T08:47:46">
+<testsuite errors="0" failures="1" hostname="Garbage-Collector" name="bigNumberTest" tests="4" time="0.132" timestamp="2009-05-02T10:00:24">
   <properties>
     <property name="default.javac.source" value="1.6" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -22,6 +22,7 @@
     <property name="sun.java2d.noddraw" value="true" />
     <property name="nbplatform.default.harness.dir" value="/usr/share/netbeans/6.1/harness" />
     <property name="debug-args-line" value="-Xdebug" />
+    <property name="netbeans.hash.code" value="unique=NBUBU01f679bcd-031c-4c1f-a721-54e519fe9bb8" />
     <property name="build.sysclasspath" value="ignore" />
     <property name="have.sources" value="true" />
     <property name="includes" value="**" />
@@ -37,6 +38,7 @@
     <property name="run.classpath" value=":build/classes" />
     <property name="libs.PostgreSQLDriver.maven-pom" value="" />
     <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="netbeans.autoupdate.variant" value="" />
     <property name="libs.absolutelayout.javadoc" value="" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="netbeans.buildnumber" value="080905" />
@@ -49,6 +51,7 @@
     <property name="sun.jnu.encoding" value="UTF-8" />
     <property name="java.runtime.name" value="IcedTea6 1.3.1 (6b12-0ubuntu6.4) Runtime Environment" />
     <property name="jdk.home" value="/usr/lib/jvm/java-6-openjdk" />
+    <property name="netbeans.autoupdate.version" value="1.23" />
     <property name="org.openide.TopManager" value="org.netbeans.core.NonGui" />
     <property name="netbeans.dirs" value="/usr/share/netbeans/6.1/nb6.1:/usr/share/netbeans/6.1/ide9:/usr/share/netbeans/6.1/java2:/usr/share/netbeans/6.1/apisupport1:/usr/share/netbeans/6.1/harness:" />
     <property name="java.specification.name" value="Java Platform API Specification" />
@@ -70,6 +73,7 @@
     <property name="libs.jaxb21.maven-pom" value="" />
     <property name="ant.file" value="/media/disk/Common/Netbeans_Projects/svn/build.xml" />
     <property name="libs.junit_4.src" value="" />
+    <property name="netbeans.autoupdate.language" value="ru" />
     <property name="java.io.tmpdir" value="/tmp" />
     <property name="build.test.results.dir" value="build/test/results" />
     <property name="user.language" value="ru" />
@@ -94,6 +98,7 @@
     <property name="platform.active" value="default_platform" />
     <property name="http.nonProxyHosts" value="localhost|127.0.0.1|Garbage-Collector" />
     <property name="libs.junit_4.javadoc" value="" />
+    <property name="netbeans.autoupdate.country" value="RU" />
     <property name="libs.beans-binding.maven-pom" value="" />
     <property name="javadoc.encoding" value="UTF-8" />
     <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
@@ -148,6 +153,7 @@
     <property name="build.compiler.emacs" value="true" />
     <property name="ant.project.name" value="bigNumbersLibrary" />
     <property name="libs.swing-layout.classpath" value="/usr/share/netbeans/6.1/platform8/modules/ext/swing-layout-1.0.3.jar" />
+    <property name="org.openide.awt.SwingBrowserImpl.do-not-block-awt" value="true" />
     <property name="java.vm.specification.version" value="1.0" />
     <property name="work.dir" value="/media/disk/Common/Netbeans_Projects/svn" />
     <property name="javadoc.use" value="true" />
@@ -193,22 +199,26 @@
     <property name="user.country" value="RU" />
     <property name="javadoc.notree" value="false" />
     <property name="libs.jaxws21.javadoc" value="/home/chibis/.netbeans/6.1/docs/jaxws-2_1-api-doc.zip" />
-    <property name="default.javac.target" value="1.6" />
-    <property name="javadoc.additionalparam" value="" />
     <property name="javac.classpath" value="" />
+    <property name="javadoc.additionalparam" value="" />
+    <property name="default.javac.target" value="1.6" />
     <property name="build.classes.dir" value="build/classes" />
-    <property name="libs.swing-layout.javadoc" value="" />
     <property name="libs.swing-layout.src" value="" />
+    <property name="libs.swing-layout.javadoc" value="" />
     <property name="java.vendor" value="Sun Microsystems Inc." />
     <property name="javac.target" value="1.5" />
     <property name="libs.swing-app-framework.src" value="" />
     <property name="java.specification.version" value="1.6" />
     <property name="sun.arch.data.model" value="32" />
   </properties>
-  <testcase classname="bigNumberTest" name="testByteConstructor" time="0.033" />
-  <testcase classname="bigNumberTest" name="testIntConstructor" time="0.007" />
-  <testcase classname="bigNumberTest" name="testZeroConstructor" time="0.001" />
-  <testcase classname="bigNumberTest" name="testBigNumberToByteArray" time="0.005" />
+  <testcase classname="bigNumberTest" name="testByteConstructor" time="0.011" />
+  <testcase classname="bigNumberTest" name="testIntConstructor" time="0.005" />
+  <testcase classname="bigNumberTest" name="testZeroConstructor" time="0.008">
+    <failure message="!Array not null! expected:&lt;null&gt; but was:&lt;[I@2a340e&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: !Array not null! expected:&lt;null&gt; but was:&lt;[I@2a340e&gt;
+	at bigNumberTest.testZeroConstructor(bigNumberTest.java:90)
+</failure>
+  </testcase>
+  <testcase classname="bigNumberTest" name="testBigNumberToByteArray" time="0.004" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -13,6 +13,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import org.amse.vadim.interpretator.Variable;
 
 /**
  * @author chibis
@@ -75,7 +78,11 @@ public class View extends JFrame {
 	    		//////////////////interpretator////////////
 	    try {
 		Expression expression = ExprBuilder.generate(text);
-		Integer res = expression.evaluate(null);
+
+		Map<Variable,Constant> map = new HashMap<Variable,Constant>();
+		map.put(new Variable("x"), new Constant(10));
+		map.put(new Variable("y"), new Constant(15));
+		Integer res = expression.evaluate(map);
 		input.setText(res.toString());
 		
 	    } catch (ParseException ex) {
