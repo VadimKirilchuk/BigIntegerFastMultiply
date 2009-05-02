@@ -20,8 +20,8 @@ public class Test {
     public static void testSimpleDiv() throws Exception{
 	Random rnd = new Random();
 	
-	byte[] byteArray1 = new byte[10];
-	byte[] byteArray2 = new byte[1];
+	byte[] byteArray1 = new byte[30];
+	byte[] byteArray2 = new byte[8];
 
 	for (int i = 0; i < byteArray1.length; i++) {
 	    byteArray1[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
@@ -61,6 +61,18 @@ public class Test {
 	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
 	
+	    for (int i = 0; i < byteArray1.length; i++) {
+		System.out.print(byteArray1[i]+"_");
+	    }
+	    System.out.println();
+	    for (int i = 0; i < byteArray2.length; i++) {
+		System.out.print(byteArray2[i]+"_");
+	    }
+	    System.out.println();
+	    System.out.println();
+	
+	//byte[] byteArray1 = {-59,32,5,74,107,-115};
+	//byte[] byteArray2 = {93,92};
 	BigNumber bn1 = new BigNumber(byteArray1);
 	BigNumber bn2 = new BigNumber(byteArray2);
 	BigInteger bi1 = new BigInteger(byteArray1);

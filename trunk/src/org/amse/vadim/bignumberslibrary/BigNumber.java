@@ -223,9 +223,8 @@ public class BigNumber implements Comparable<BigNumber>{
 	    return resData;
 	}
 	
-	//resData = Operations.div(this,bnum);
-	
-	return null;
+	resData = Operations.div(this,bnum);
+	return resData;
     }
     ///////////////////////End of operations//////////////////////////////////
     public BigNumber shiftLeft(int n) {
@@ -335,12 +334,13 @@ public class BigNumber implements Comparable<BigNumber>{
 	int len = this.length;
 	//leading null bytes in int
 	int freeBits = 32 - Util.bitLen(array[len - 1]);
+	//BUG
 	int freeBytes = freeBits % 8 == 0 ? freeBits / 8 - 1 : freeBits / 8;
 
 	if (this.sign == -1) {
 	    array = Util.reverseInts(this.intArray);
 	}
-
+        //BUG
 	int byteArrayLen = (len - 1) * 4 + (4 - freeBytes);
 	byte[] byteArray = new byte[byteArrayLen];
 
