@@ -7,6 +7,7 @@ package org.amse.vadim.interpretator;
  */
 import java.util.Iterator;
 import java.util.Map;
+import org.amse.vadim.bignumberslibrary.BigNumber;
 
 public class Binary implements Expression {
 
@@ -80,19 +81,26 @@ public class Binary implements Expression {
 	throw new IllegalArgumentException();
     }
 
-    public int evaluate(Map<Variable, Constant> context) {
+    public BigNumber evaluate(Map<Variable, Constant> context) {
 	// evaluating meanings of left and right operands
-	int leftVal = left.evaluate(context);
-	int rightVal = right.evaluate(context);
+	BigNumber leftVal = left.evaluate(context);
+	BigNumber rightVal = right.evaluate(context);
 
 	if (operator.equals("+")) {
-	    return leftVal + rightVal;
+	    return leftVal.add(rightVal);
 	} else if (operator.equals("-")) {
-	    return leftVal - rightVal;
+	    return leftVal.sub(rightVal);
 	} else if (operator.equals("*")) {
-	    return leftVal * rightVal;
+	    return leftVal.mul(rightVal);
+	} else if (operator.equals("/")) {	    
+	    try{
+	        BigNumber bn = leftVal.div(rightVal);
+		return bn;
+	    } catch(Exception ex) {
+		throw new ArithmeticException("Divide by zero exception");
+	    }
 	}
-	// only +, -, * are supported
+
 	throw new IllegalArgumentException();
     }
 }

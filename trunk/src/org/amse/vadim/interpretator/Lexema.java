@@ -18,6 +18,7 @@ public class Lexema {
     }    // More common used lexems
     public static final Lexema LEFTPAR = new OpLexema("(", 0);
     public static final Lexema RIGHTPAR = new OpLexema(")", 0);
+    public static final Lexema MINUS = new OpLexema("-", 1);
     public static final Lexema EOTEXT = new Lexema(Type.EOTEXT);
     public static final Lexema UNKNOWN = new Lexema(Type.EOTEXT);    // Type of THIS lexem.
     //public field!!!

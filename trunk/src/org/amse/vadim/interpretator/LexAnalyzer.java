@@ -61,6 +61,7 @@ public class LexAnalyzer {
     public Lexema nextLex() {
 	// finding first non zero symbol
 	skip();
+	Lexema l;
 	switch (nextChar) {
 	    case 0:  // end of stream or error while reading from the stream
 		return Lexema.EOTEXT;
@@ -72,24 +73,25 @@ public class LexAnalyzer {
 		return Lexema.RIGHTPAR;
 	    case '+':
 	    case '-':
-		Lexema l = new OpLexema(Character.toString(nextChar), 1);
-		getNext();
+		l = new OpLexema(Character.toString(nextChar), 1);
+		getNext();		
 		return l;
 	    case '*':
+	    case '/':
+		l = new OpLexema(Character.toString(nextChar), 2);
 		getNext();
-		return new OpLexema(Character.toString('*'), 2);
+		return l;
 	    default:
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (Character.isDigit(nextChar)) {
 		    // analyzing the number           
-		    int n = 0;
+		    StringBuilder n = new StringBuilder();
 		    do {//while character is digit
-			n *= 10;
-			n += (nextChar - '0');//getting digit
+			n.append(nextChar);//getting digit
 			getNext();//changing nextChar
 		    } while (Character.isDigit(nextChar));
 		    //return numberLexema
-		    return new NumLexema(n);
+		    return new NumLexema(n.toString());
 		} else if (Character.isLetter(nextChar)) {
 		    // analyzing identificator
 		    StringBuffer sb = new StringBuffer();

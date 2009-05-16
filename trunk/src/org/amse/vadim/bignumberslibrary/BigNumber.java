@@ -82,6 +82,51 @@ public class BigNumber implements Comparable<BigNumber>{
 	this.intArray = null;
 	this.length = 0;
     }
+    
+    public BigNumber(String str){
+	int sign=1;
+	int len;
+	if (str.charAt(0)=='-'){
+	    sign=-1;
+	    len= str.length()-1;
+	}else{
+	    len = str.length();
+	}
+	
+	byte[] ar = new byte[len]; 
+	int f;
+	if (sign==1){
+	    f=0;
+	}else{
+	    f=1;
+	}
+	
+	for (int i = f ; i < len; i++) {
+	    ar[len-1-i] = (byte) (str.charAt(i)-'0');
+	}
+	
+	StringBuilder binRepresentation = Util.binRepr(ar);
+	int end = binRepresentation.length();
+	int resLen = end / 8;
+	
+	byte[] result = new byte[resLen];
+	
+	for (int i = 0; i < end; ) {
+	    int bits=0;	    
+            int k = i/8;
+	    while(bits < 8){
+	        result[k] =(byte)(result[k] << 1);
+		result[k] = (byte)(result[k] + (binRepresentation.charAt(i)-'0'));
+		i++;	
+		bits++;
+	    }	    
+	}	
+	result = Util.reverseArray(result);
+	
+	this.intArray = Convert.intFrom(result);
+	this.sign = sign;
+	this.length = this.intArray.length;
+    }
 //////////////////////////////////End of Constructors///////////////////////////////    
     //---------------------------------//
     //           OPERATIONS            //
@@ -199,7 +244,7 @@ public class BigNumber implements Comparable<BigNumber>{
 
 	return new BigNumber(result, this.sign * bnum.sign, false);
     }
-    //Not Supported yet!!!
+
     //Divide like "/" - not like "/ + %"
     public BigNumber div(BigNumber bnum) throws Exception{
 	return new BigNumber(this.divide(bnum).getQ(),this.sign*bnum.sign);
@@ -213,7 +258,7 @@ public class BigNumber implements Comparable<BigNumber>{
 	    return new DivisionData(null, null);
 	}
 	if (bnum.length > this.length) {
-	    return new DivisionData(null, bnum.intArray);
+	    return new DivisionData(null, this.intArray);
 	}
 	
 	DivisionData resData;
@@ -317,6 +362,9 @@ public class BigNumber implements Comparable<BigNumber>{
 	return new BigNumber(intArray, -sign);
     }
 
+    //returning only real part
+    //remember array may have elements 
+    //at indexes more than length!!
     public int[] getArrayOfBigNumber() {
 	int[] result = new int[this.length];
 	for (int i = 0; i < result.length; i++) {
@@ -364,5 +412,41 @@ public class BigNumber implements Comparable<BigNumber>{
     //reverse by default
     public byte[] toByteArray() {
 	return this.toByteArray(true);
+    }
+    
+    public String toStr() throws Exception{
+        if (this.sign==0) {
+	    return "0";
+	}
+	
+	StringBuilder result = new StringBuilder();
+	
+	int[] dvdr = {10};
+	BigNumber divider = new BigNumber(dvdr);
+	DivisionData dd = new DivisionData();
+	
+	dd = this.divide(divider);	
+	
+	if (dd.getQ()==null) {
+	    return new String("" + dd.getR()[0]);
+	}
+	
+	int[] q = dd.getQ();
+	while (!(q.length==1 && q[0]==0)){
+	    result.append(dd.getR()[0]);
+	    dd = new BigNumber(q).divide(divider);
+	    q = dd.getQ();
+	}
+	result.append(dd.getR()[0]);
+	
+	StringBuilder res = new StringBuilder();
+	if (this.sign==-1){
+	    res.append("-");
+	}
+	for (int i = 0; i < result.length(); i++) {
+	    res.append(result.charAt(result.length()-1-i));
+	}
+	
+	return res.toString();
     }
 }
