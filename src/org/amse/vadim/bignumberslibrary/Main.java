@@ -19,6 +19,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         //Test.run3();
 	//TestBigNumberPerf.runAll();
-	Test.testDiv();
+	//Test.testDiv();
+	//Test.toDec();
+	//Test.toBin();
+	Test.bNumFromStr();
     }
 }

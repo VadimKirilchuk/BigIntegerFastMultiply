@@ -17,9 +17,41 @@ public class Test {
     private Test() {
     }
 
-    public static void testSimpleDiv() throws Exception{
-	Random rnd = new Random();
+    public static void bNumFromStr(){
+	String str = "123456789123456789";
+	BigNumber bn = new BigNumber(str);
+	BigInteger bi = new BigInteger(str);
 	
+	str="646";
+    }
+    
+    public static void toBin() {
+	byte[] ar = {3,1,5};
+
+	DivisionByteData bd = Util.simpleDivOnTwo(ar);
+	byte[] q = bd.getQ();
+
+	while ((q.length != 0) || (q.length == 1 && q[0]!=0)) {
+	    System.out.println(bd.getR()[0]);
+	    bd = Util.simpleDivOnTwo(q);
+	    q = bd.getQ();
+	}
+	System.out.println(bd.getR()[0]);
+    }
+
+    public static void toDec() {
+	byte[] ar = {1, 0, 0, 0, 0};
+	BigNumber bn = new BigNumber(ar);
+	try {
+
+	    System.out.println(bn.toStr());
+	} catch (Exception ex) {
+	}
+    }
+
+    public static void testSimpleDiv() throws Exception {
+	Random rnd = new Random();
+
 	byte[] byteArray1 = new byte[30];
 	byte[] byteArray2 = new byte[8];
 
@@ -30,26 +62,26 @@ public class Test {
 	for (int i = 0; i < byteArray2.length; i++) {
 	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
-	
+
 	BigNumber bn1 = new BigNumber(byteArray1);
 	BigNumber bn2 = new BigNumber(byteArray2);
 	BigInteger bi1 = new BigInteger(byteArray1);
 	BigInteger bi2 = new BigInteger(byteArray2);
-	
+
 	byte[] result1 = bi1.divide(bi2).toByteArray();
 	for (int i = 0; i < result1.length; i++) {
-	    System.out.print(result1[i]+"_");
+	    System.out.print(result1[i] + "_");
 	}
 	System.out.println();
 	byte[] result2 = bn1.div(bn2).toByteArray();
 	for (int i = 0; i < result2.length; i++) {
-	    System.out.print(result2[i]+"_");
+	    System.out.print(result2[i] + "_");
 	}
     }
-   
-        public static void testDiv() throws Exception{
+
+    public static void testDiv() throws Exception {
 	Random rnd = new Random();
-	
+
 	byte[] byteArray1 = new byte[6];
 	byte[] byteArray2 = new byte[2];
 
@@ -60,35 +92,35 @@ public class Test {
 	for (int i = 0; i < byteArray2.length; i++) {
 	    byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
 	}
-	
-	    for (int i = 0; i < byteArray1.length; i++) {
-		System.out.print(byteArray1[i]+"_");
-	    }
-	    System.out.println();
-	    for (int i = 0; i < byteArray2.length; i++) {
-		System.out.print(byteArray2[i]+"_");
-	    }
-	    System.out.println();
-	    System.out.println();
-	
+
+	for (int i = 0; i < byteArray1.length; i++) {
+	    System.out.print(byteArray1[i] + "_");
+	}
+	System.out.println();
+	for (int i = 0; i < byteArray2.length; i++) {
+	    System.out.print(byteArray2[i] + "_");
+	}
+	System.out.println();
+	System.out.println();
+
 	//byte[] byteArray1 = {-59,32,5,74,107,-115};
 	//byte[] byteArray2 = {93,92};
 	BigNumber bn1 = new BigNumber(byteArray1);
 	BigNumber bn2 = new BigNumber(byteArray2);
 	BigInteger bi1 = new BigInteger(byteArray1);
 	BigInteger bi2 = new BigInteger(byteArray2);
-	
+
 	byte[] result1 = bi1.divide(bi2).toByteArray();
 	for (int i = 0; i < result1.length; i++) {
-	    System.out.print(result1[i]+"_");
+	    System.out.print(result1[i] + "_");
 	}
 	System.out.println();
 	byte[] result2 = bn1.div(bn2).toByteArray();
 	for (int i = 0; i < result2.length; i++) {
-	    System.out.print(result2[i]+"_");
+	    System.out.print(result2[i] + "_");
 	}
     }
-    
+
     public static void run2() {
 	///////determination
 	Random rnd = new Random();
@@ -150,12 +182,12 @@ public class Test {
     public static void run3() {
 	///////determination
 	Random rnd = new Random();
-	int N1 = rnd.nextInt(Byte.MAX_VALUE*2);
-	int N2 = rnd.nextInt(Byte.MAX_VALUE*2);
-        
+	int N1 = rnd.nextInt(Byte.MAX_VALUE * 2);
+	int N2 = rnd.nextInt(Byte.MAX_VALUE * 2);
+
 	//int[] intArray1 = {256023456};
 	//int[] intArray2 = {256045645};
-	
+
 	int[] intArray1 = new int[N1];
 	int[] intArray2 = new int[N2];
 
@@ -166,17 +198,17 @@ public class Test {
 	for (int i = 0; i < intArray2.length; i++) {
 	    intArray2[i] = (int) (rnd.nextInt(Integer.MAX_VALUE) - 2 * rnd.nextInt(Integer.MAX_VALUE));
 	}
-         
+
 	System.out.println(intArray1[0]);
 	System.out.println(intArray2[0]);
 	System.out.println();
-	
+
 	byte[] byteArray1 = Convert.byteFrom(intArray1, intArray1.length);
 	byte[] byteArray2 = Convert.byteFrom(intArray2, intArray2.length);
 
 	short[] shortArray1 = Convert.shortFrom(intArray1, intArray1.length);
 	short[] shortArray2 = Convert.shortFrom(intArray2, intArray2.length);
-	
+
 	for (int i = 0; i < byteArray1.length; i++) {
 	    System.out.print(byteArray1[i] + "_");
 	}
@@ -185,7 +217,7 @@ public class Test {
 	    System.out.print(byteArray2[i] + "_");
 	}
 	System.out.println();
-	
+
 	for (int i = 0; i < shortArray1.length; i++) {
 	    System.out.print(shortArray1[i] + "_");
 	}
@@ -198,10 +230,10 @@ public class Test {
 	byte[] res1;
 	byte[] res2;
 	//////////end of determination
- 
-	res1= Operations.mulFFT2(byteArray1, byteArray2);	
-	res2= Operations.mulFFT3(shortArray1, shortArray2);
-	
+
+	res1 = Operations.mulFFT2(byteArray1, byteArray2);
+	res2 = Operations.mulFFT3(shortArray1, shortArray2);
+
 	System.out.println();
 	for (int i = 0; i < res1.length; i++) {
 	    //if(res1[i]!= res2[i])
@@ -211,6 +243,6 @@ public class Test {
 	for (int i = 0; i < res2.length; i++) {
 	    //if(res1[i]!= res2[i])
 	    System.out.print(res2[i] + "_");
-	}	
+	}
     }
 }

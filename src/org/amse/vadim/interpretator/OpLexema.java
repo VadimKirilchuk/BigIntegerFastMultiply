@@ -17,4 +17,8 @@ public class OpLexema extends Lexema {
 	this.operator = operator;
 	this.prio = priority;
     }
+    
+    public String getOperator(){
+	return this.operator;
+    }
 }

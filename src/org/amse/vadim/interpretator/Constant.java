@@ -7,19 +7,20 @@ package org.amse.vadim.interpretator;
  */
 import java.util.Iterator;
 import java.util.Map;
+import org.amse.vadim.bignumberslibrary.BigNumber;
 
 public class Constant implements Expression, Comparable<Constant> {
 
-    private final int value;    // More often used constants
-    public final static Constant ZERO = new Constant(0);
-    public final static Constant ONE = new Constant(1);
+    private final BigNumber value;    // More often used constants
+    public final static Constant ZERO = new Constant(new BigNumber());
+    public final static Constant ONE = new Constant(new BigNumber("1"));
 
     // Constructor of constant
-    public Constant(int value) {
+    public Constant(BigNumber value) {
 	this.value = value;
     }
     // function to get value of constant
-    public int getValue() {
+    public BigNumber getValue() {
 	return value;
     }
 
@@ -45,16 +46,16 @@ public class Constant implements Expression, Comparable<Constant> {
     }
 
     public int hashCode() {
-	return (value + 29) * 37;
+	return (value.getLength() + 29) * 37;
     }
 
     public String toString() {
-	return ((Integer) value).toString();
+	return (value.toString());
     }
 
     // Comparable interface methods
     public int compareTo(Constant c) {
-	return value - c.value;
+	return value.compareTo(c.value);
     }
 
     //  Iterable interface methods
@@ -67,7 +68,7 @@ public class Constant implements Expression, Comparable<Constant> {
 	return ZERO;
     }
 
-    public int evaluate(Map<Variable, Constant> context) {
+    public BigNumber evaluate(Map<Variable, Constant> context) {
 	return value;
     }
 }

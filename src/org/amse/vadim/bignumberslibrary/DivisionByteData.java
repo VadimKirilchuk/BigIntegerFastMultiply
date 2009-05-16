@@ -9,26 +9,26 @@ package org.amse.vadim.bignumberslibrary;
  *
  * @author chibis
  */
-public class DivisionData {
+public class DivisionByteData {
     // A / B = q + r  
-    private final int[] q;
-    private final int[] r;
+    private final byte[] q;
+    private final byte[] r;
     
-    public  DivisionData(){
+    public  DivisionByteData(){
 	this.q = null;
-	this.r = new int[1];
+	this.r = new byte[1];
     }
     
-    public DivisionData(int[] q, int[] r){
+    public DivisionByteData(byte[] q, byte[] r){
 	this.q = q;
 	this.r = r;
     }
     
-    public int[] getQ(){
+    public byte[] getQ(){
 	return this.q;
     }
     
-    public int[] getR(){
+    public byte[] getR(){
 	return this.r;
     }
 }

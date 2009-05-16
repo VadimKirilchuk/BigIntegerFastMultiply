@@ -6,6 +6,7 @@ package org.amse.vadim.interpretator;
  */
 import java.util.Iterator;
 import java.util.Map;
+import org.amse.vadim.bignumberslibrary.BigNumber;
 
 public class Variable implements Expression {
     // Name of variable
@@ -69,7 +70,13 @@ public class Variable implements Expression {
 	return v.equals(this) ? Constant.ONE : Constant.ZERO;
     }
 
-    public int evaluate(Map<Variable, Constant> context) {
-	return context.get(this).getValue();
+    public BigNumber evaluate(Map<Variable, Constant> context) {
+	try{
+	    BigNumber bn = context.get(this).getValue();
+	    return bn;
+	} catch(NullPointerException ex){
+	    throw new IllegalArgumentException(name + ":unknown Variable ");
+	}
+	
     }
 }
