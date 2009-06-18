@@ -84,7 +84,7 @@ public class bigNumberTest extends TestCase {
 	}
     }
 
-    public void testZeroConstructor() {
+    public void ZeroConstructor() {
 	BigNumber bn1 = new BigNumber();
 	assertEquals("!Sign is not 0!", 0, bn1.getSign());
 	assertEquals("!Array not null!", null, bn1.getArrayOfBigNumber());
