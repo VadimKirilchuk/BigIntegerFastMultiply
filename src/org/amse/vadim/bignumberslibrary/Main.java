@@ -17,11 +17,6 @@ public class Main {
      */
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) throws Exception {
-        //Test.run3();
-	//TestBigNumberPerf.runAll();
-	//Test.testDiv();
-	//Test.toDec();
-	//Test.toBin();
-	Test.bNumFromStr();
+
     }
 }

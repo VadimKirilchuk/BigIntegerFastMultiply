@@ -134,16 +134,7 @@ public class Operations {
 	return z;
     }
 
-    public static byte[] mulFFT(byte[] array1, byte[] array2) {
-	Complex[] a = Convert.complexFrom(array1);
-	Complex[] b = Convert.complexFrom(array2);
-
-	Complex[] result = Fourier2.fftMultiply(a, b);
-
-	return Convert.byteFrom(result);
-    }
-
-    public static byte[] mulFFT2(byte[] array1, byte[] array2) {
+    public static byte[] mulByteFFT(byte[] array1, byte[] array2) {
 	int len = Fourier.extendLength(array1.length, array2.length);
 	Complex[] a = Convert.complexFrom(array1, len);
 	Complex[] b = Convert.complexFrom(array2, len);
@@ -161,7 +152,7 @@ public class Operations {
 	return Convert.byteFrom(c);
     }
 
-    public static byte[] mulFFT3(short[] array1, short[] array2) {
+    public static byte[] mulShortFFT(short[] array1, short[] array2) {
 	int len = Fourier.extendLength(array1.length, array2.length);
 	Complex[] a = Convert.complexFrom(array1, len);
 	Complex[] b = Convert.complexFrom(array2, len);
