@@ -4,7 +4,7 @@
  */
 
 import junit.framework.TestCase;
-import org.amse.vadim.bignumberslibrary.*;
+import bignumberslibrary.*;
 import java.math.BigInteger;
 import java.util.Random;
 
