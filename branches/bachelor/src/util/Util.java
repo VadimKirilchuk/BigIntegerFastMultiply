@@ -10,7 +10,7 @@ package util;
  */
 public class Util {
 
-    public final static long LONG_MASK = 0xffffffffL;
+    public final static long LONG_MASK = 0xffffffffL;//to interpret signed Java ints like unsigned.
 
     private Util() {
     }
@@ -36,7 +36,7 @@ public class Util {
         }
         return 0;
     }
-    
+
     //Returns pos in BigNumber Array of first non zero element
     public static int cutLeadingZero(int[] intArray, int thisLength) {
         int length = thisLength;
@@ -80,49 +80,52 @@ public class Util {
         return result;
     }
 
+    /**
+     * Method that return new array with elements from given array
+     * but in reverse order.
+     * @param array Byte array to reverse
+     * @return New byte array with reversed elements
+     */
     public static byte[] reverseArray(byte[] array) {
-        //???
-        if (array.length == 1 || array.length == 0) {
+        int len = array.length;
+        if (len <= 1) { //length==1 or 0;
             return array;
         }
-        byte[] result = new byte[array.length];
-
-        for (int i = 0; i <= array.length / 2; ++i) {
-            result[i] = array[array.length - 1 - i];
-            result[array.length - 1 - i] = array[i];
-        }
-
-        return result;
-    }
-
-    public static int[] reverseArray(int[] array) {
-
-        int[] result = new int[array.length];
-
-        for (int i = 0; i <= array.length / 2; ++i) {
-            result[i] = array[array.length - 1 - i];
-            result[array.length - 1 - i] = array[i];
-        }
-
-        return result;
-    }
-
-    public static byte[] reverseCode(byte[] array) {
-        int len = array.length;
 
         byte[] result = new byte[len];
-
-        for (int i = 0; i < len; i++) {
-            result[i] = (byte) (~(array[i] & 0xff) + 1);
+        //note that if array have
+        for (int left = 0, right = len - 1; left <= right; ++left, --right) {
+            result[left] = array[right];
+            result[right] = array[left];
         }
+
         return result;
     }
 
-    public static byte[] makePositive(byte[] array) {
+//    public static int[] reverseArray(int[] array) {//need optimize like reverseArray(byte[] array)
+//
+//        int[] result = new int[array.length];
+//
+//        for (int i = 0; i <= array.length / 2; ++i) {
+//            result[i] = array[array.length - 1 - i];
+//            result[array.length - 1 - i] = array[i];
+//        }
+//
+//        return result;
+//    }
+    /**
+     * Creates and returns new array with direct bin code from source array with complement bin code.
+     * Has reversed elements order and no leading zeroes.
+     * @param array source byte array that have complement bin code
+     * @return byte array in direct code with reversed elements order
+     * and without leading zeroes.
+     */
+    public static byte[] reverseComplementCodeArray(byte[] array) {
         int len = array.length;
 
         int keep = 0;
         // Find first non-sign (0xff) byte of input
+        // byte array {-1,-1,-1, 1} equivalent to {1} with sign -1
         for (keep = 0; keep < len && array[keep] == -1; keep++) {
             ;
         }
@@ -130,25 +133,57 @@ public class Util {
         byte[] result = new byte[len - keep];
 
         for (int i = keep; i < len; ++i) {
-            result[i - keep] = (byte) (~(array[i] & 0xff));
+            result[i - keep] = (byte) (~(array[array.length - 1 - (i - keep)] & 0xff));
         }
 
         return result;
     }
 
-    public static int[] addOne(int[] array) {
-        int length = array.length;
+//    public static byte[] reverseCode(byte[] array) {
+//        int len = array.length;
+//
+//        byte[] result = new byte[len];
+//
+//        for (int i = 0; i < len; i++) {
+//            result[i] = (byte) (~(array[i] & 0xff) + 1);
+//        }
+//        return result;
+//    }
+//    public static byte[] makePositive(byte[] array) {
+//        int len = array.length;
+//
+//        int keep = 0;
+//        // Find first non-sign (0xff) byte of input
+//        // byte array {-1,-1,-1, 1} equivalent to {1} with sign -1
+//        for (keep = 0; keep < len && array[keep] == -1; keep++) {
+//            ;
+//        }
+//
+//        byte[] result = new byte[len - keep];
+//
+//        for (int i = keep; i < len; ++i) {
+//            result[i - keep] = (byte) (~(array[i] & 0xff));
+//        }
+//
+//        return result;
+//    }
+    public static int[] addOne(int[] array) {//maybe write merged func with intFrom and reverse from complement.
+        
+        int length = (array.length==0 ? 1 : array.length);
         int[] result = new int[length];
         int i = 0;
+
+        //adding one. If first int is overflowed we must add one to next int and so on.
         for (i = 0; i < length; ++i) {
             result[i] = (int) ((array[i] & Util.LONG_MASK) + 1);
 
-            if (result[i] != 0) {
+            if (result[i] != 0) {//no overflow
                 ++i;
                 break;
             }
         }
-        for (int j = i; j < length; ++j) {
+
+        for (int j = i; j < length; ++j) {//just copy next elements of array
             result[j] = array[j];
         }
 
@@ -157,9 +192,18 @@ public class Util {
 
     public static int[] reverseInts(int[] array) {
         int len = array.length;
+        //{-1 0 0 0} 11111111 00000000 00000000 00000000
+        // ~         00000000 11111111 11111111 11111111
+        // +1        00000001 00000000 00000000 00000000  = 16777216
 
+        // sign=-1   00000001 00000000 00000000 00000000
+        // ~         11111110 11111111 11111111 11111111
+        // +1        11111111 00000000 00000000 00000000 = {-1 0 0 0}
         int[] result = new int[len];
+        
         int i = 0;
+        //inverting all ints and add one to the first element.
+        //if int overflowed +1 to next int.
         for (i = 0; i < len; i++) {
             result[i] = (int) (((~array[i]) & Util.LONG_MASK) + 1);
 
@@ -180,8 +224,17 @@ public class Util {
      * bitLen(val) is the number of bits in val.
      */
     public static int bitLen(int w) {
-        // Binary search - decision tree (5 tests, rarely 6)
-        return (w < 1 << 15 ? (w < 1 << 7 ? (w < 1 << 3 ? (w < 1 << 1 ? (w < 1 << 0 ? (w < 0 ? 32 : 0) : 1) : (w < 1 << 2 ? 2 : 3)) : (w < 1 << 5 ? (w < 1 << 4 ? 4 : 5) : (w < 1 << 6 ? 6 : 7))) : (w < 1 << 11 ? (w < 1 << 9 ? (w < 1 << 8 ? 8 : 9) : (w < 1 << 10 ? 10 : 11)) : (w < 1 << 13 ? (w < 1 << 12 ? 12 : 13) : (w < 1 << 14 ? 14 : 15)))) : (w < 1 << 23 ? (w < 1 << 19 ? (w < 1 << 17 ? (w < 1 << 16 ? 16 : 17) : (w < 1 << 18 ? 18 : 19)) : (w < 1 << 21 ? (w < 1 << 20 ? 20 : 21) : (w < 1 << 22 ? 22 : 23))) : (w < 1 << 27 ? (w < 1 << 25 ? (w < 1 << 24 ? 24 : 25) : (w < 1 << 26 ? 26 : 27)) : (w < 1 << 29 ? (w < 1 << 28 ? 28 : 29) : (w < 1 << 30 ? 30 : 31)))));
+        // Binary search - decision tree
+        return (w < 1 << 15 ? (w < 1 << 7
+                ? (w < 1 << 3 ? (w < 1 << 1 ? (w < 1 << 0 ? (w < 0 ? 32 : 0) : 1)
+                : (w < 1 << 2 ? 2 : 3)) : (w < 1 << 5 ? (w < 1 << 4 ? 4 : 5) : (w < 1 << 6 ? 6 : 7)))
+                : (w < 1 << 11 ? (w < 1 << 9 ? (w < 1 << 8 ? 8 : 9) : (w < 1 << 10 ? 10 : 11))
+                : (w < 1 << 13 ? (w < 1 << 12 ? 12 : 13) : (w < 1 << 14 ? 14 : 15))))
+                : (w < 1 << 23 ? (w < 1 << 19 ? (w < 1 << 17 ? (w < 1 << 16 ? 16 : 17)
+                : (w < 1 << 18 ? 18 : 19))
+                : (w < 1 << 21 ? (w < 1 << 20 ? 20 : 21) : (w < 1 << 22 ? 22 : 23)))
+                : (w < 1 << 27 ? (w < 1 << 25 ? (w < 1 << 24 ? 24 : 25) : (w < 1 << 26 ? 26 : 27))
+                : (w < 1 << 29 ? (w < 1 << 28 ? 28 : 29) : (w < 1 << 30 ? 30 : 31)))));
     }
 
     public static void primitiveLeftShift(int[] a, int len, int n) {
@@ -336,4 +389,5 @@ public class Util {
         }
         return result;
     }
+
 }

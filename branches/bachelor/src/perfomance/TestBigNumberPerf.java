@@ -102,7 +102,7 @@ public class TestBigNumberPerf {
 
             while (!disp.canTrust(delta)) {
                 t1 = System.currentTimeMillis();
-                bn1.mul(bn2);
+                bn1.multiply(bn2);
                 t2 = System.currentTimeMillis();
                 delta = (int) (t2 - t1);
                 System.out.println(Math.sqrt(disp.getDispersion()) / disp.getMean());
