@@ -138,7 +138,7 @@ public class BigNumber implements Comparable<BigNumber> {
 
         if (array == null || array.length == 0) {
             this.sign = 0;
-            this.intArray = new int[]{0};
+            this.intArray = new int[0];
             this.length = 0;
         } else {
             this.intArray = array;
@@ -172,7 +172,7 @@ public class BigNumber implements Comparable<BigNumber> {
      */
     public BigNumber() {
         this.sign = 0;
-        this.intArray = new int[]{0};
+        this.intArray = new int[0];
         this.length = 0;
     }
 
