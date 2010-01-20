@@ -156,7 +156,7 @@ public class BigNumber implements Comparable<BigNumber> {
      * It is same as BigNumber(int[] array, int sign), except sign is 1 by default.
      * <p>
      * Does not support non positive array`s(with last byte less than zero), interprets them as
-     * positive BigNumber in complement code.
+     * positive BigNumber.
      * <p>
      * To make BigNumber non positive use <code>bigNumber.negate()</code> or create BigNumber using
      * constructor from int array with sign.
@@ -224,6 +224,10 @@ public class BigNumber implements Comparable<BigNumber> {
         this.intArray = Convert.intFrom(result);
         this.sign = sign;
         this.length = this.intArray.length;
+    }
+
+    public BigNumber(BigInteger bigInteger){
+        this(bigInteger.toByteArray());
     }
 //////////////////////////////////End of Constructors///////////////////////////////
 
