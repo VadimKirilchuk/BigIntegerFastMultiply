@@ -206,4 +206,83 @@ public class bigNumberTest extends TestCase {
         }
     }
 
+    public void testBigNumberLeftShift() {
+        System.out.println("Testing BigNumberLeftShift");
+        int g = 100;
+        while ((g--) > 0) {
+
+            Random rnd = new Random();
+
+            int N = rnd.nextInt(Short.MAX_VALUE) + 1;
+
+            byte[] byteArray = new byte[N];
+
+            for (int i = 0; i < N; ++i) {
+                byte buff = 0;
+
+                buff = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(
+                        Byte.MAX_VALUE));
+
+                byteArray[i] = buff;
+            }
+
+            BigNumber bn = new BigNumber(byteArray);
+            BigInteger bi = new BigInteger(byteArray);
+
+            N = rnd.nextInt(Short.MAX_VALUE);
+            bn = bn.shiftLeft(N);
+            bi = bi.shiftLeft(N);
+
+            byte[] byteArray1 = bn.toByteArray();
+            byte[] byteArray2 = bi.toByteArray();
+
+            assertEquals("!Length not same!", byteArray1.length,
+                    byteArray2.length);
+
+            for (int i = 0; i < byteArray2.length; ++i) {
+                assertEquals(i + " element !Wrong data in array!", byteArray1[i],
+                        byteArray2[i]);
+            }
+        }
+    }
+
+        public void testBigNumberRightShift() {
+        System.out.println("Testing BigNumberRightShift");
+        int g = 100;
+        while ((g--) > 0) {
+
+            Random rnd = new Random();
+
+            int N = rnd.nextInt(Short.MAX_VALUE)+1;
+
+            byte[] byteArray = new byte[N];
+
+            for (int i = 0; i < N; ++i) {
+                byte buff = 0;
+
+                buff = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
+
+                byteArray[i] = buff;
+            }
+
+            BigNumber bn = new BigNumber(byteArray);
+            BigInteger bi = new BigInteger(byteArray);
+
+            N = rnd.nextInt(Short.MAX_VALUE);
+            bn = bn.shiftRight(N);
+            bi = bi.shiftRight(N);
+
+            byte[] byteArray1 = bn.toByteArray();
+            byte[] byteArray2 = bi.toByteArray();
+
+            assertEquals("!Length not same!",
+                    byteArray1.length,
+                    byteArray2.length);
+
+            for (int i = 0; i < byteArray2.length; ++i) {
+                assertEquals(i + " element !Wrong data in array!", byteArray1[i],
+                        byteArray2[i]);
+            }
+        }
+    }
 }

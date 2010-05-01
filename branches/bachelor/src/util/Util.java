@@ -238,39 +238,27 @@ public class Util {
     }
 
     public static void primitiveLeftShift(int[] a, int len, int n) {
-        //remove or stay???
+        //TODO remove or stay???
         if (len == 0 || n == 0) {
             return;
         }
+
         int n2 = 32 - n;
+
         for (int i = len - 1, c = a[i]; i > 0; --i) {
             int b = c;
             c = a[i - 1];
             a[i] = (b << n) | (c >>> n2);
         }
         a[0] <<= n;
-    }
-    //Check this
-
-    public static void primitiveRightShift(int[] a, int len, int n) {
-        //remove or stay???
-        if (len == 0 || n == 0) {
-            return;
-        }
-        int n2 = 32 - n;
-        for (int i = 0, c = a[i]; i < len - 1; ++i) {
-            int tmp = c;
-            c = a[i + 1];
-            a[i] = (c << n2) | (tmp >>> n);
-        }
-        a[len - 1] >>>= n;
-    }
+    }    
 
     public static int[] leftShift(int[] a, int len, int n) {
-        //how much 32shifts
+        //how much 32shifts //shifts on whole ints
         int nInts = n >>> 5;
-        //how much bit<32 shifts
+        //how much bit<32 shifts //shifts on bits
         int nBits = n & 0x1F;
+        //how much bits are reserved in higher int
         int bitsInHighWord = bitLen(a[len - 1]);
 
         // If shift can be done without recopy, do so
@@ -296,45 +284,76 @@ public class Util {
         }
     }
 
-    public static int[] rightShift(int[] a, int len, int n) {
-        //how much 32shifts
+    public static void primitiveRightShift(int[] shifted, int len,
+                                           int[] src, int srcLen,
+                                           int indx, int n) {
+        int n2 = 32 - n;
+        for(int i = 0; i< len - 1; i++){
+            shifted[i] = src[srcLen-len+i]>>>n | src[srcLen-len+i+1]<<n2;
+        }
+        shifted[len-1] = src[srcLen-1]>>>n;
+    }
+
+    public static int[] rightShift(int[] src, int len, int sign, int n) {
+        //how much 32shifts //shifts on whole ints
         int nInts = n >>> 5;
-        //how much bit<32 shifts
+        //how much bit<32 shifts //shifts on bits
         int nBits = n & 0x1F;
 
-        if (nInts >= len) {
-            return null;
-        }
         int[] result = null;
-        //good
-        if (nBits == 0) {
-            int newLen = len - nInts;
-            result = new int[newLen];
-            for (int i = 0; i < newLen; i++) {
-                result[i] = a[len - newLen + i];
+
+        // if we shifted all significant ints
+        if (nInts >= len) {
+            if (sign < 0) {
+                result = new int[1];
+                result[0] = 1; //it`s for BigInteger compatibility
             }
+            return result;
+        }
+
+        int resultLen;
+
+        if (nBits == 0) { //if shifting only on whole ints.
+            resultLen = len - nInts;
+            result = new int[resultLen];
+            for (int i = 0; i < resultLen; i++) {   // for example if it was 1 2 3 4 where 4 is higher
+                result[i] = src[len - resultLen + i]; // then after shifting right on two ints
+            }                                    // it must be 3 4 !!!
         } else {
 
-            int newLen = len;
-            int highBits = a[len - 1] >>> nBits;
+            resultLen = len - nInts;
+            result = new int[len - nInts];
 
-            if (highBits != 0) {
-                newLen = len - nInts;
-                result = new int[len - nInts];
-            } else {
-                newLen = len - nInts - 1;
-                result = new int[len - nInts - 1];
+            primitiveRightShift(result, result.length, src, len, 0, nBits);
+        }
+
+        if (sign < 0) {
+            boolean onesLost = false;
+            for (int i = 0; i < nInts; ++i) {
+                onesLost = (src[i] != 0);
             }
-
-            for (int i = 0; i < newLen; i++) {
-                result[i] = a[len - newLen + i];
+            if (!onesLost && nBits != 0) {
+                onesLost = (src[nInts] << (32 - nBits) != 0);
             }
-
-            primitiveRightShift(result, result.length, nBits);
-            //	result[left] = (a[right] << nBits2) | (a[left] >>> nBits);
+            if(onesLost){
+                result = increment(result);
+            }
         }
 
         return result;
+    }
+
+    private static int[] increment(int[] val) {
+        int lastSum = 0;
+        for (int i = 0; i < val.length && lastSum == 0; ++i) {
+            lastSum = (val[i] += 1);
+        }
+        if (lastSum == 0) {
+            val = new int[val.length + 1];
+            val[0] = 1;
+        }
+
+        return val;
     }
 
     public static DivisionByteData simpleDivOnTwo(byte[] num) {

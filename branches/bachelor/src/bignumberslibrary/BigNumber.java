@@ -404,7 +404,7 @@ public class BigNumber implements Comparable<BigNumber> {
     ///////////////////////End of operations//////////////////////////////////
 
     /**
-     * @deprecated until tests
+     * 
      * @param n
      * @return
      */
@@ -423,7 +423,7 @@ public class BigNumber implements Comparable<BigNumber> {
     }
 
     /**
-     * @deprecated until tests
+     *
      * @param n
      * @return
      */
@@ -438,7 +438,9 @@ public class BigNumber implements Comparable<BigNumber> {
             return shiftLeft(-n);
         }
 
-        int[] result = Util.rightShift(this.intArray, this.length, n);
+        int[] result = Util.rightShift(this.intArray, this.length, this.sign, n);
+
+
         return new BigNumber(result, this.sign);
     }
 
