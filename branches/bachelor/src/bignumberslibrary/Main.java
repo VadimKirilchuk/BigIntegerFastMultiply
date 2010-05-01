@@ -4,8 +4,6 @@
  */
 package bignumberslibrary;
 
-import java.math.BigInteger;
-
 /**
  *
  * @author Chibis
@@ -18,5 +16,15 @@ public class Main {
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) throws Exception {
 
+//        int[] array2 = new int[]{4,65537};
+//        int[] array22 = new int[]{2};
+//        @SuppressWarnings("deprecation")
+//        int[] result = Operations.mulIntFNT(array2, array22);
+//
+//
+//
+//        for (int i = 0; i < result.length; ++i) {
+//            System.out.print(result[i]+" ");
+//        }
     }
 }

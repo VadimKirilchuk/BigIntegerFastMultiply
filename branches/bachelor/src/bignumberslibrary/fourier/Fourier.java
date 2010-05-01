@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package bignumberslibrary;
+package bignumberslibrary.fourier;
 
 import util.Complex;
 
@@ -74,7 +74,6 @@ public class Fourier {
                 result[k] = new Complex();
             }
         }
-
     }
 
     public static Complex[] iterativeFFT(Complex[] a, int extendLength, boolean reverseFFT) {
@@ -155,7 +154,7 @@ public class Fourier {
         return iterativeFFT(a, a.length, true);
     }
 
-    private static boolean is2power(int a) {
+    public static boolean is2power(int a) {
         if (a < 2) {
             return false;
         }
