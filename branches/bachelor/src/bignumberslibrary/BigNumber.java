@@ -1,5 +1,6 @@
 package bignumberslibrary;
 
+import bignumberslibrary.karatsuba.Karatsuba;
 import util.Convert;
 import util.DivisionData;
 import util.Util;
@@ -369,6 +370,14 @@ public class BigNumber implements Comparable<BigNumber> {
         return new BigNumber(result, this.sign * bnum.sign, false);
     }
 
+    public BigNumber mulKaratsuba(BigNumber bnum) {
+        if (sign == 0 || bnum.sign == 0) {
+            return new BigNumber();
+        }
+
+        return Karatsuba.multiply(this, bnum);
+    }
+
     /**
      * Divide like "/" - not like "/ + %"
      * @deprecated until fixed bugs and tested
@@ -620,6 +629,7 @@ public class BigNumber implements Comparable<BigNumber> {
                 bitLength = magBitLength;
             }
         }
+
         return bitLength;
     }
 

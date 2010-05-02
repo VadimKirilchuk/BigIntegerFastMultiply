@@ -4,7 +4,6 @@ package correctness;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import junit.framework.TestCase;
 import bignumberslibrary.*;
 import java.math.BigInteger;
@@ -15,6 +14,14 @@ import java.util.Random;
  * @author chibis
  */
 public class operationsTest extends TestCase {
+
+    private static Random rnd = new Random();
+    private static byte[] res1;
+    private static byte[] res2;
+    private static BigNumber bn1;
+    private static BigNumber bn2;
+    private static BigInteger bi1;
+    private static BigInteger bi2;
 
     public operationsTest(String testName) {
         super(testName);
@@ -31,29 +38,15 @@ public class operationsTest extends TestCase {
     }
 
     public void testAdding() {
+        System.out.println("Testing adding for correctness.");
         ///////determination
-        Random rnd = new Random();
-        int N1 = rnd.nextInt(Short.MAX_VALUE);
-        int N2 = rnd.nextInt(Short.MAX_VALUE);
+        byte[] byteArray1 = generateRandomByteArray(0, Short.MAX_VALUE);
+        byte[] byteArray2 = generateRandomByteArray(0, Short.MAX_VALUE);
 
-        byte[] byteArray1 = new byte[N1];
-        byte[] byteArray2 = new byte[N2];
-
-        for (int i = 0; i < byteArray1.length; i++) {
-            byteArray1[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
-        }
-
-        for (int i = 0; i < byteArray2.length; i++) {
-            byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
-        }
-
-        BigNumber bn1 = new BigNumber(byteArray1);
-        BigNumber bn2 = new BigNumber(byteArray2);
-        BigInteger bi1 = new BigInteger(byteArray1);
-        BigInteger bi2 = new BigInteger(byteArray2);
-
-        byte[] res1;
-        byte[] res2;
+        bn1 = new BigNumber(byteArray1);
+        bn2 = new BigNumber(byteArray2);
+        bi1 = new BigInteger(byteArray1);
+        bi2 = new BigInteger(byteArray2);
         //////////end of determination
 
 
@@ -64,11 +57,7 @@ public class operationsTest extends TestCase {
         BigInteger resultBi = bi1.add(bi2);
         res2 = resultBi.toByteArray();
 
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
-
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element!", res1[i], res2[i]);
-        }
+        checkCorrectness(res2, res1);
         ////////end of two positive
 
         ///////summ of positive and negative
@@ -83,11 +72,7 @@ public class operationsTest extends TestCase {
         resultBi = bi1.add(bi2);
         res2 = resultBi.toByteArray();
 
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
-
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element!", res1[i], res2[i]);
-        }
+        checkCorrectness(res2, res1);
         //////end of positive and negative summ
 
         /////summ of two negative
@@ -102,41 +87,22 @@ public class operationsTest extends TestCase {
         resultBi = bi1.add(bi2);
         res2 = resultBi.toByteArray();
 
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
-
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element!", res1[i], res2[i]);
-        }
+        checkCorrectness(res2, res1);
         //////end of negative and negative summ
 
 
     }
 
     public void testSubtracting() {
+        System.out.println("Testing subtracting for correctness.");
         ///////determination
-        Random rnd = new Random();
-        int N1 = rnd.nextInt(Short.MAX_VALUE);
-        int N2 = rnd.nextInt(Short.MAX_VALUE);
+        byte[] byteArray1 = generateRandomByteArray(0, Short.MAX_VALUE);
+        byte[] byteArray2 = generateRandomByteArray(0, Short.MAX_VALUE);
 
-        byte[] byteArray1 = new byte[N1];
-        byte[] byteArray2 = new byte[N2];
-
-
-        for (int i = 0; i < byteArray1.length; i++) {
-            byteArray1[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
-        }
-
-        for (int i = 0; i < byteArray2.length; i++) {
-            byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
-        }
-
-        BigNumber bn1 = new BigNumber(byteArray1);
-        BigNumber bn2 = new BigNumber(byteArray2);
-        BigInteger bi1 = new BigInteger(byteArray1);
-        BigInteger bi2 = new BigInteger(byteArray2);
-
-        byte[] res1 = {0};
-        byte[] res2 = {0};
+        bn1 = new BigNumber(byteArray1);
+        bn2 = new BigNumber(byteArray2);
+        bi1 = new BigInteger(byteArray1);
+        bi2 = new BigInteger(byteArray2);
         //////////end of determination
 
 
@@ -146,12 +112,8 @@ public class operationsTest extends TestCase {
 
         BigInteger resultBi = bi1.subtract(bi2);
         res2 = resultBi.toByteArray();
-
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
-
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element!", res1[i], res2[i]);
-        }
+        
+        checkCorrectness(res2, res1);
         ////////end of two positive sub
 
         ///////sub of positive and negative
@@ -166,12 +128,7 @@ public class operationsTest extends TestCase {
         resultBi = bi1.subtract(bi2);
         res2 = resultBi.toByteArray();
 
-
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
-
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element!", res1[i], res2[i]);
-        }
+        checkCorrectness(res2, res1);
         //////end of positive and negative sub
 
         /////sub of two negative
@@ -186,120 +143,124 @@ public class operationsTest extends TestCase {
         resultBi = bi1.subtract(bi2);
         res2 = resultBi.toByteArray();
 
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
-
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element!", res1[i], res2[i]);
-        }
+        checkCorrectness(res2, res1);
         //////end of negative and negative summ
     }
 
     public static void testSimpleMultiply() {
-        ///////determination
-        Random rnd = new Random();
-	int N1 = rnd.nextInt(Short.MAX_VALUE)+1; //+1 for non zero-length array
-	int N2 = rnd.nextInt(Short.MAX_VALUE)+1; //same as above
+        System.out.println("Testing simple multiply for correctness.");
+        int count = 4;
+        while ((count--) > 0) {
+            ///////determination
+            byte[] byteArray1 = generateRandomByteArray(1000, Short.MAX_VALUE);
+            byte[] byteArray2 = generateRandomByteArray(1000, Short.MAX_VALUE);
 
-        byte[] byteArray1 = new byte[N1];
-        byte[] byteArray2 = new byte[N2];
+            bn1 = new BigNumber(byteArray1);
+            bn2 = new BigNumber(byteArray2);
+            bi1 = new BigInteger(byteArray1);
+            bi2 = new BigInteger(byteArray2);
+            //////////end of determination
 
-        for (int i = 0; i < byteArray1.length; i++) {
-            byteArray1[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
-        }
+            BigNumber resultBn = bn1.multiply(bn2);
+            res1 = resultBn.toByteArray();
 
-        for (int i = 0; i < byteArray2.length; i++) {
-            byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
-        }
+            BigInteger resultBi = bi1.multiply(bi2);
+            res2 = resultBi.toByteArray();
 
-        BigNumber bn1 = new BigNumber(byteArray1);
-        BigNumber bn2 = new BigNumber(byteArray2);
-	BigInteger bi1=new BigInteger(byteArray1);
-	BigInteger bi2=new BigInteger(byteArray2);
+            checkCorrectness(res2, res1);
 
-        byte[] res1;
-        byte[] res2;
-        //////////end of determination
+            ////////////Test of 2^31 mul bug on zerolength arrays
+            for (int i = 0; i < byteArray1.length; i++) {
+                byteArray1[i] = (byte) (-128 + rnd.nextInt(100));
+            }
 
-        BigNumber resultBn = bn1.multiply(bn2);
-        res1 = resultBn.toByteArray();
+            for (int i = 0; i < byteArray2.length; i++) {
+                byteArray2[i] = (byte) (-128 + rnd.nextInt(100));
+            }
 
-        BigInteger resultBi = bi1.multiply(bi2);
-        res2 = resultBi.toByteArray();
+            bn1 = new BigNumber(byteArray1);
+            bn2 = new BigNumber(byteArray2);
+            bi1 = new BigInteger(byteArray1);
+            bi2 = new BigInteger(byteArray2);
 
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
+            resultBn = bn1.multiply(bn2);
+            res1 = resultBn.toByteArray();
 
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element #" + i + "!", res1[i], res2[i]);
-        }
+            resultBi = bi1.multiply(bi2);
+            res2 = resultBi.toByteArray();
 
-        ////////////Test of 2^31 mul bug on zerolength arrays
-        for (int i = 0; i < byteArray1.length; i++) {
-            byteArray1[i] = (byte) (-128 + rnd.nextInt(100));
-        }
-        
-        for (int i = 0; i < byteArray2.length; i++) {
-            byteArray2[i] = (byte) (-128 + rnd.nextInt(100));
-        }
-
-        bn1 = new BigNumber(byteArray1);
-        bn2 = new BigNumber(byteArray2);
-        bi1 = new BigInteger(byteArray1);
-        bi2 = new BigInteger(byteArray2);
-
-        resultBn = bn1.multiply(bn2);
-        res1 = resultBn.toByteArray();
-
-        resultBi = bi1.multiply(bi2);
-        res2 = resultBi.toByteArray();
-
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
-
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element #" + i + "!", res1[i], res2[i]);
+            checkCorrectness(res2, res1);
         }
     }
 
     public static void testMulFFT() {
-        ///////determination
-        Random rnd = new Random();
-        int N1 = rnd.nextInt(Short.MAX_VALUE / 2);
-        int N2 = rnd.nextInt(Short.MAX_VALUE / 2);
+        System.out.println("Testing FFT multiply for correctness.");
+        int count = 4;
+        while ((count--) > 0) {
+            ///////determination
+            byte[] byteArray1 = generateRandomByteArray(1000, Short.MAX_VALUE*16);
+            byte[] byteArray2 = generateRandomByteArray(1000, Short.MAX_VALUE*16);
 
-        byte[] byteArray1 = new byte[N1];
-        byte[] byteArray2 = new byte[N2];
+            bn1 = new BigNumber(byteArray1);
+            bn2 = new BigNumber(byteArray2);
+            bi1 = new BigInteger(byteArray1);
+            bi2 = new BigInteger(byteArray2);
+            //////////end of determination
 
-        //Старший коэфицент д.б >0 иначе, бигинтеджер подумает,Что ему передали отрицательное число.
-        byteArray1[0] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-        for (int i = 1; i < byteArray1.length; i++) {
-            byteArray1[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
-        }
+            BigNumber resultBn = bn1.mulFFT2(bn2);
+            res1 = resultBn.toByteArray();
 
-        byteArray2[0] = (byte) rnd.nextInt(Byte.MAX_VALUE);
-        for (int i = 1; i < byteArray2.length; i++) {
-            byteArray2[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.nextInt(Byte.MAX_VALUE));
-        }
+            BigInteger resultBi = bi1.multiply(bi2);
+            res2 = resultBi.toByteArray();
 
-        BigNumber bn1 = new BigNumber(byteArray1);
-        BigNumber bn2 = new BigNumber(byteArray2);
-        BigInteger bi1 = new BigInteger(byteArray1);
-        BigInteger bi2 = new BigInteger(byteArray2);
-
-        byte[] res1;
-        byte[] res2;
-        //////////end of determination
-
-        BigNumber resultBn = bn1.mulFFT2(bn2);
-        res1 = resultBn.toByteArray();
-
-        BigInteger resultBi = bi1.multiply(bi2);
-        res2 = resultBi.toByteArray();
-
-
-        assertEquals(res2[0] + "!Length not the same!", res1.length, res2.length);
-
-        for (int i = 0; i < Math.min(res1.length, res2.length); i++) {
-            assertEquals("!Wrong element!", res1[i], res2[i]);
+            checkCorrectness(res2, res1);
         }
     }
 
+    public static void testKaratsuba() {
+        System.out.println("Testing Karatsuba multiply for correctness.");
+        int count = 10;
+        while ((count--) > 0) {
+            ///////determination
+            byte[] byteArray1 = generateRandomByteArray(1000, Short.MAX_VALUE*16);
+            byte[] byteArray2 = generateRandomByteArray(1000, Short.MAX_VALUE*16);
+
+            bn1 = new BigNumber(byteArray1);
+            bn2 = new BigNumber(byteArray2);
+            bi1 = new BigInteger(byteArray1);
+            bi2 = new BigInteger(byteArray2);
+            //////////end of determination
+
+            BigNumber resultBn = bn1.mulKaratsuba(bn2);
+            res1 = resultBn.toByteArray();
+
+            BigInteger resultBi = bi1.multiply(bi2);
+            res2 = resultBi.toByteArray();
+
+            checkCorrectness(res2, res1);
+
+        }
+    }
+
+    private static byte[] generateRandomByteArray(int minLength, int maxLength){
+
+        int len = rnd.nextInt(maxLength) + minLength;
+        byte[] result = new byte[len];
+
+        for (int i = 0; i < len; ++i) {
+                result[i] = (byte) (rnd.nextInt(Byte.MAX_VALUE) - 2 * rnd.
+                        nextInt(Byte.MAX_VALUE));
+            }
+
+        return result;
+    }
+
+    private static void checkCorrectness(byte[] bigIntRes, byte[] bigNumRes) {
+        int len = bigIntRes.length;
+        assertEquals("!Length not the same!", len, bigNumRes.length);
+
+        for (int i = 0; i < len; i++) {
+            assertEquals("!Wrong element!", bigIntRes[i], bigNumRes[i]);
+        }
+    }
 }
