@@ -17,24 +17,29 @@ import ru.kirilchuk.bigint.interpretator.Variable;
 
 /**
  * Ugly GUI for long numbers calculations. =)
+ * The code is very ugly too...
+ *
+ * <p> No MVC.
  *
  * @author Kirilchuk V.E.
  */
 @SuppressWarnings("serial")
-public class View extends JFrame {
+public class CalcGUI extends JFrame {
 
-    private int width = 800;
+    private int width  = 800;
     private int heigth = 400;
+
     int i = 0;
     public JTextField input;
+
     private Map<Variable, Constant> map = new HashMap<Variable, Constant>();
     private DefaultListModel model = new DefaultListModel();
     private JList history;
     private JButton clearHistory;
     public JButton numpad;
-    private NumpadView numView;
+    private NumpadGUI numView;
 
-    public View() {
+    public CalcGUI() {
         super("CALCULATOR");
         setSize(this.width, this.heigth);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -43,7 +48,7 @@ public class View extends JFrame {
         input.addActionListener(new Entered());
         input.addKeyListener(new KeyAction());
 
-        numView = new NumpadView(this);
+        numView = new NumpadGUI(this);
 
         history = new JList(model);
         history.addListSelectionListener(new histSelect());

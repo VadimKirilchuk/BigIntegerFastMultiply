@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.JButton;
@@ -17,39 +18,33 @@ import java.util.Random;
 
 /**
  * Ugly GUI for entering numbers and operations by mouse. =)
+ * The code is not pretty too...
  *
  * @author Kirilchuk V.E.
  */
 @SuppressWarnings("serial")
-public class NumpadView extends JFrame {
+public class NumpadGUI extends JFrame {
 
-    private int width = 300;
+    private int width  = 300;
     private int heigth = 250;
+
     private JPanel p;
-    private View calc;
+    private CalcGUI calc;
     private JSpinner spinner;
 
-    public NumpadView(final View calc) {
+    public NumpadGUI(final CalcGUI calc) {
 	super("NUMPAD");
 	this.calc=calc;
-	this.addComponentListener(new ComponentListener() {
+	this.addComponentListener(new ComponentAdapter() {
 
-	    public void componentResized(ComponentEvent e) {
-		//throw new UnsupportedOperationException("Not supported yet.");
-	    }
-
-	    public void componentMoved(ComponentEvent e) {
-		//throw new UnsupportedOperationException("Not supported yet.");
-	    }
-
+            @Override
 	    public void componentShown(ComponentEvent e) {
 		calc.numpad.setText("Close Numpad");
-		//throw new UnsupportedOperationException("Not supported yet.");
 	    }
 
+            @Override
 	    public void componentHidden(ComponentEvent e) {
 		calc.numpad.setText("Open Numpad");
-		//throw new UnsupportedOperationException("Not supported yet.");
 	    }
 	});
 	setMinimumSize(new Dimension(285, 200));
@@ -103,7 +98,6 @@ public class NumpadView extends JFrame {
 	p.add(buttons[10]);
 	p.add(buttons[15]);
 	p.add(buttons[13]);
-	
 	p.add(buttons[16]);
 	p.add(buttons[17]);
 	p.add(buttons[18]);
@@ -162,6 +156,5 @@ public class NumpadView extends JFrame {
 		calc.input.setText("");
 	    }
 	}
-	
     }
 }
