@@ -12,7 +12,7 @@ public class Main {
 	SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                new View();
+                new CalcGUI();
             }
         });
     }
