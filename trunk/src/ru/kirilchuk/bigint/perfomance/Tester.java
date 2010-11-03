@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 /**
+ * Utility class just for measuring speed of multiplication of improved BigInteger.
  *
  * @author Kirilchuk V.E.
  */

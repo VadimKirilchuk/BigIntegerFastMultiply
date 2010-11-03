@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 /**
- * @author chibis
+ * Class for testing different base of long numbers.
+ *
+ * @author Kirilchuk V.E.
  */
 public class TestBasePerf {
 

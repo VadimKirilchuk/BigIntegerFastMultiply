@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ru.kirilchuk.bigint.calc;
 
 import java.awt.BorderLayout;
@@ -20,9 +16,11 @@ import javax.swing.SpinnerNumberModel;
 import java.util.Random;
 
 /**
+ * Ugly GUI for entering numbers and operations by mouse. =)
  *
- * @author chibis
+ * @author Kirilchuk V.E.
  */
+@SuppressWarnings("serial")
 public class NumpadView extends JFrame {
 
     private int width = 300;
