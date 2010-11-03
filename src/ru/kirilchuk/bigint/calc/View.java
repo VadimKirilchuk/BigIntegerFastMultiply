@@ -16,7 +16,9 @@ import ru.kirilchuk.bigint.BigInteger;
 import ru.kirilchuk.bigint.interpretator.Variable;
 
 /**
- * @author chibis
+ * Ugly GUI for long numbers calculations. =)
+ *
+ * @author Kirilchuk V.E.
  */
 @SuppressWarnings("serial")
 public class View extends JFrame {
@@ -226,6 +228,5 @@ public class View extends JFrame {
                 return name;
             }
         }
-
     }
 }

@@ -1,6 +1,7 @@
 package ru.kirilchuk.bigint.util;
 
 /**
+ * Utility class for transformations such as Fourier transform and Hartley transform.
  *
  * @author Kirilchuk V.E.
  */
@@ -14,7 +15,6 @@ public class TransformUtilities {
         if (is2power(n)) {
             return n;
         } else {
-            //n = n - 1;
             n |= n >> 1;
             n |= n >> 2;
             n |= n >> 4;

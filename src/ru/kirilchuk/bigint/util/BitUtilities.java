@@ -1,6 +1,7 @@
 package ru.kirilchuk.bigint.util;
 
 /**
+ * Utility class for some bit constants and operations.
  *
  * @author Kirilchuk V.E.
  */
