@@ -13,19 +13,17 @@ import java.util.Random;
  *
  * @author Kirilchuk V.E.
  */
-public class Tester {
+public class Performance {
     private static Random     rnd = new Random();
     private static byte[]     b1;
     private static byte[]     b2;
     private static BigInteger num1;
     private static BigInteger num2;
 
-//  private static Dispersion disp;
-//  private static int delta;
     private static long t1;
     private static long t2;
 
-    private Tester() {}
+    private Performance() {}
 
     public static void main(String[] args) {
         int         from       = 256;
@@ -63,7 +61,7 @@ public class Tester {
         }
     }
 
-    public static PrintWriter createFile(String fileName) throws IOException {
+    private static PrintWriter createFile(String fileName) throws IOException {
         File file = new File(fileName);
 
         if (!file.exists()) {
