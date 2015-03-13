@@ -9,8 +9,8 @@ Here you can find:
 * Multiplication that uses Fast Hartley Transform
 * Description of work and short presentation of results on Russian can be found in downloads section or here:
 
-// TODO: links are not working
-http://bignumberslibrary.googlecode.com/files/BigNumbers.ppt 
-http://bignumberslibrary.googlecode.com/files/Diploma.docx
+Here you may find performance comparison slides and my diploma. Language: Russian.
+https://github.com/VadimKirilchuk/bignumberslibrary/raw/master/Documentation/BigNumbers.ppt
+https://github.com/VadimKirilchuk/bignumberslibrary/raw/master/Documentation/Diploma.docx
 
 Note: original BigInteger class was truncutted to get rid of some unimportant to multiplication dependencies.
