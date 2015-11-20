@@ -1,6 +1,6 @@
 This project is a copy of standart BigInteger class with serious improvements in multiplication algorithm.
 
-The goal of the project is to provide more efficient big numbers multiplication algorithm instead of so called "school algorithm" in original implementation.
+The goal of the project is to provide more efficient big numbers multiplication algorithm instead of so called "school algorithm" in the original implementation.
 
 Here you can find:
 
@@ -9,7 +9,7 @@ Here you can find:
 * Multiplication that uses Fast Hartley Transform
 
 Here you may find performance comparison slides and my diploma. Language: Russian.
-https://github.com/VadimKirilchuk/bignumberslibrary/raw/master/Documentation/BigNumbers.ppt
-https://github.com/VadimKirilchuk/bignumberslibrary/raw/master/Documentation/Diploma.docx
+https://github.com/VadimKirilchuk/BigIntegerFastMultiply/blob/master/Documentation/BigNumbers.ppt
+https://github.com/VadimKirilchuk/BigIntegerFastMultiply/blob/master/Documentation/Diploma.docx
 
 Note: original BigInteger class was truncutted to get rid of some unimportant to multiplication dependencies.
